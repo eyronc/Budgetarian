@@ -14,7 +14,10 @@ export function Navbar() {
           <button className="hidden sm:inline-flex px-4 py-2 text-sm font-medium text-gray-700 hover:text-green-600 transition-colors cursor-pointer">
             Sign In
           </button>
-          <button className="px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white bg-linear-to-r from-[#16A34A] to-[#65A30D] rounded-full hover:shadow-lg hover:scale-105 transition-all cursor-pointer">
+          <button 
+            className="px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white rounded-full hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+            style={{ background: 'linear-gradient(to right, #16A34A, #65A30D)' }}
+          >
             Get Started
           </button>
         </div>

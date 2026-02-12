@@ -25,7 +25,10 @@ export function BrandName({ showTagline = false, size = 'medium', align = 'left'
   return (
     <div className={alignClass}>
       <span className={`${textSizes[size].name} font-bold text-gray-900 block leading-none`}>
-        Budget<span className="bg-linear-to-r from-[#16A34A] to-[#65A30D] bg-clip-text text-transparent">arian</span>
+        Budget<span 
+          className="bg-clip-text text-transparent"
+          style={{ backgroundImage: 'linear-gradient(to right, #16A34A, #65A30D)' }}
+        >arian</span>
       </span>
       {showTagline && (
         <span className={`${textSizes[size].tagline} text-green-600 font-medium block mt-1`}>
