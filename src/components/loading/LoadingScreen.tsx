@@ -36,7 +36,7 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
   }, [onLoadingComplete]);
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-white via-[#F0FDF4] to-[#DCFCE7] flex flex-col items-center justify-center z-50">
+    <div className="fixed inset-0 bg-linear-to-br from-white via-[#F0FDF4] to-[#DCFCE7] flex flex-col items-center justify-center z-50">
       {/* Logo and branding */}
       <div className="flex flex-col items-center mb-12 animate-fade-in">
         <div className="mb-6">

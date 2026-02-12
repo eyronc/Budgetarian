@@ -13,7 +13,7 @@ export default function App() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="px-4 sm:px-6 py-12 sm:py-16 md:py-24 bg-gradient-to-b from-white to-[#F0FDF4]">
+      <section className="px-4 sm:px-6 py-12 sm:py-16 md:py-24 bg-linear-to-b from-white to-[#F0FDF4]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-[#DCFCE7] text-[#16A34A] rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
@@ -23,7 +23,7 @@ export default function App() {
             
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight px-4">
               Healthy meals{' '}
-              <span className="bg-gradient-to-r from-[#16A34A] to-[#65A30D] bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-[#16A34A] to-[#65A30D] bg-clip-text text-transparent">
                 on your budget
               </span>
             </h1>
@@ -34,7 +34,7 @@ export default function App() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
-              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#16A34A] to-[#65A30D] text-white font-semibold rounded-full hover:shadow-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-[#16A34A] to-[#65A30D] text-white font-semibold rounded-full hover:shadow-xl transition-all cursor-pointer inline-flex items-center justify-center gap-2 text-sm sm:text-base">
                 Start Planning Meals
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
@@ -47,7 +47,7 @@ export default function App() {
           {/* Feature Preview Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-12 sm:mt-20 px-4">
             <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#16A34A] to-[#65A30D] rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-[#16A34A] to-[#65A30D] rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
                 <DollarSign className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
@@ -59,7 +59,7 @@ export default function App() {
             </div>
 
             <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#F59E0B] to-[#EAB308] rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-[#F59E0B] to-[#EAB308] rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
                 <Apple className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
@@ -71,7 +71,7 @@ export default function App() {
             </div>
 
             <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow sm:col-span-2 md:col-span-1">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#0EA5E9] to-[#14B8A6] rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-linear-to-br from-[#0EA5E9] to-[#14B8A6] rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
                 <TrendingDown className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
@@ -138,7 +138,7 @@ export default function App() {
       </section>
 
       {/* Stats Section */}
-      <section className="px-4 sm:px-6 py-16 sm:py-20 bg-gradient-to-br from-[#16A34A] to-[#65A30D]">
+      <section className="px-4 sm:px-6 py-16 sm:py-20 bg-linear-to-br from-[#16A34A] to-[#65A30D]">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-8 text-center text-white">
             <div className="px-4">
@@ -168,7 +168,7 @@ export default function App() {
           <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-10 px-4">
             Join thousands using Budgetarian to save money and improve their nutrition
           </p>
-          <button className="px-8 sm:px-10 py-4 sm:py-5 bg-gradient-to-r from-[#16A34A] to-[#65A30D] text-white font-semibold rounded-full hover:shadow-2xl transition-all cursor-pointer inline-flex items-center gap-2 text-base sm:text-lg mx-4">
+          <button className="px-8 sm:px-10 py-4 sm:py-5 bg-linear-to-r from-[#16A34A] to-[#65A30D] text-white font-semibold rounded-full hover:shadow-2xl transition-all cursor-pointer inline-flex items-center gap-2 text-base sm:text-lg mx-4">
             Start Your Free Meal Plan
             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
