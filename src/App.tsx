@@ -12,11 +12,11 @@ export default function App() {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="px-6 sm:px-8 py-20 sm:py-28 md:py-32" style={{ background: 'linear-gradient(to bottom, white, #F0FDF4)' }}>
+      {/* Hero Section - REDUCED TOP PADDING */}
+      <section className="px-6 sm:px-8 pt-12 sm:pt-16 pb-20 sm:pb-24" style={{ background: 'linear-gradient(to bottom, white, #F0FDF4)' }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-4xl mx-auto mb-16 sm:mb-20">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#DCFCE7] text-[#16A34A] rounded-full text-sm font-medium mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#DCFCE7] text-[#16A34A] rounded-full text-sm font-medium mb-6">
               <TrendingDown className="w-4 h-4" />
               Save money, eat healthy
             </div>
@@ -53,7 +53,7 @@ export default function App() {
           </div>
 
           {/* Feature Preview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-24">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow">
               <div 
                 className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
@@ -103,9 +103,9 @@ export default function App() {
       </section>
 
       {/* How It Works */}
-      <section className="px-6 sm:px-8 py-24 sm:py-32 bg-white">
+      <section className="px-6 sm:px-8 py-20 sm:py-24 bg-white">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-20">
+          <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
               How it works
             </h2>
@@ -156,7 +156,7 @@ export default function App() {
 
       {/* Stats Section */}
       <section 
-        className="px-6 sm:px-8 py-20 sm:py-24"
+        className="px-6 sm:px-8 py-16 sm:py-20"
         style={{ background: 'linear-gradient(to bottom right, #16A34A, #65A30D)' }}
       >
         <div className="max-w-5xl mx-auto">
@@ -178,7 +178,7 @@ export default function App() {
       </section>
 
       {/* CTA Section */}
-      <section className="px-6 sm:px-8 py-24 sm:py-32 bg-white">
+      <section className="px-6 sm:px-8 py-20 sm:py-24 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6" style={{ lineHeight: '1.15' }}>
             Ready to eat healthy
