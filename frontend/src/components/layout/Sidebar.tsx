@@ -1,4 +1,4 @@
-import { Home, Calendar, ShoppingCart, TrendingUp, Settings, LogOut, X, Menu } from 'lucide-react';
+import { Home, Calendar, ShoppingCart, TrendingUp, Settings, LogOut, X, Menu, ChevronLeft } from 'lucide-react';
 import { BudgetarianLogo } from '../branding/BudgetarianLogo';
 import { useState } from 'react';
 
@@ -9,6 +9,8 @@ interface SidebarProps {
 
 export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isDesktopOpen, setIsDesktopOpen] = useState(true);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const menuItems = [
     { id: 'dashboard', icon: Home, label: 'Dashboard' },
@@ -17,6 +19,15 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
     { id: 'budget', icon: TrendingUp, label: 'Budget Tracker' },
     { id: 'settings', icon: Settings, label: 'Settings' },
   ];
+
+  const handleLogoutClick = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const handleConfirmLogout = () => {
+    setShowLogoutConfirm(false);
+    onLogout();
+  };
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-gradient-to-b from-green-50 to-white">
@@ -34,7 +45,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
           </div>
           <button
             onClick={() => setIsMobileOpen(false)}
-            className="lg:hidden p-2 hover:bg-white/20 rounded-lg transition-colors"
+            className="lg:hidden p-2 hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -50,7 +61,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
           return (
             <button
               key={item.id}
-              className={`w-full group flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200 ${
+              className={`w-full group flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200 cursor-pointer ${
                 isActive
                   ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-200'
                   : 'text-gray-700 hover:bg-white hover:shadow-md'
@@ -91,8 +102,8 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
       {/* Logout button */}
       <div className="p-4 border-t border-gray-200">
         <button
-          onClick={onLogout}
-          className="w-full flex items-center gap-4 px-4 py-3.5 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 group"
+          onClick={handleLogoutClick}
+          className="w-full flex items-center gap-4 px-4 py-3.5 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 group cursor-pointer"
         >
           <div className="p-2 rounded-lg bg-red-50 group-hover:bg-red-100 transition-colors">
             <LogOut className="w-5 h-5" />
@@ -105,10 +116,19 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
 
   return (
     <>
+      {/* Menu toggle button - Desktop */}
+      <button
+        onClick={() => setIsDesktopOpen(!isDesktopOpen)}
+        className="hidden lg:block fixed top-4 left-4 z-50 p-3 bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all cursor-pointer"
+        style={{ left: isDesktopOpen ? '288px' : '16px' }}
+      >
+        {isDesktopOpen ? <ChevronLeft className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+
       {/* Mobile menu button */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all"
+        className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all cursor-pointer"
       >
         {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
@@ -116,23 +136,56 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
       {/* Mobile overlay */}
       {isMobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm cursor-pointer"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex lg:flex-col w-72 bg-white border-r border-gray-200 h-screen sticky top-0 shadow-xl">
+      <aside 
+        className={`hidden lg:flex lg:flex-col w-72 bg-white border-r border-gray-200 h-screen sticky top-0 shadow-xl transition-transform duration-300 ${
+          isDesktopOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
         <SidebarContent />
       </aside>
 
       {/* Sidebar - Mobile */}
       {isMobileOpen && (
-        <aside
-          className="lg:hidden fixed top-0 left-0 z-50 w-72 bg-white border-r border-gray-200 h-screen flex flex-col shadow-2xl"
-        >
+        <aside className="lg:hidden fixed top-0 left-0 z-50 w-72 bg-white border-r border-gray-200 h-screen flex flex-col shadow-2xl animate-slide-in-left">
           <SidebarContent />
         </aside>
+      )}
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl animate-scale-in">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <LogOut className="w-8 h-8 text-red-600" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 text-center mb-2">
+              Logout Confirmation
+            </h3>
+            <p className="text-gray-600 text-center mb-6">
+              Are you sure you want to logout? Any unsaved changes will be lost.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowLogoutConfirm(false)}
+                className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmLogout}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+              >
+                Yes, Logout
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
