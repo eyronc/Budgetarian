@@ -4,15 +4,15 @@ import { Footer } from './Footer';
 
 interface LayoutProps {
   children: ReactNode;
+  onSignIn?: () => void;
+  onGetStarted?: () => void;
 }
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ children, onSignIn, onGetStarted }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-[#FAFBFC] flex flex-col">
-      <Navbar />
-      <main className="flex-1">
-        {children}
-      </main>
+    <div className="min-h-screen bg-white">
+      <Navbar onSignIn={onSignIn} onGetStarted={onGetStarted} />
+      {children}
       <Footer />
     </div>
   );
