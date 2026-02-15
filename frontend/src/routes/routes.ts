@@ -1,10 +1,8 @@
 export const ROUTES = {
   HOME: '/',
   DASHBOARD: '/dashboard',
-  MEAL_PLAN: '/meal-plan',
-  NUTRITION: '/nutrition',
+  MEAL_PLANS: '/meal-plans',
+  GROCERY: '/grocery',
   BUDGET: '/budget',
-  PROFILE: '/profile',
-  LOGIN: '/login',
-  REGISTER: '/register',
+  SETTINGS: '/settings',
 } as const;

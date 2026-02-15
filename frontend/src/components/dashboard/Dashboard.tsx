@@ -49,7 +49,7 @@ export function Dashboard({ userEmail }: DashboardProps) {
                 <DollarSign className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider">Weekly Budget</h3>
-              <p className="text-4xl font-black bg-linear-to-br from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">$150</p>
+              <p className="text-4xl font-black bg-linear-to-br from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">₱150</p>
               <div className="flex items-center justify-between mb-4">
                 <p className="text-sm text-emerald-600 font-bold flex items-center gap-1">
                   <TrendingDown className="w-4 h-4" />

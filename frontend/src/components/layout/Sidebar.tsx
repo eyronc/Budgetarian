@@ -1,6 +1,7 @@
 import { Home, Calendar, ShoppingCart, TrendingUp, Settings, LogOut, X, Menu } from 'lucide-react';
 import { BudgetarianLogo } from '../branding/BudgetarianLogo';
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarProps {
   onLogout: () => void;
@@ -8,17 +9,18 @@ interface SidebarProps {
 }
 
 export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps) {
+  const navigate = useNavigate();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
   const menuItems = [
-    { id: 'dashboard', icon: Home, label: 'Dashboard', gradient: 'from-emerald-400 to-emerald-600' },
-    { id: 'meal-plans', icon: Calendar, label: 'Meal Plans', gradient: 'from-blue-400 to-blue-600' },
-    { id: 'grocery', icon: ShoppingCart, label: 'Grocery List', gradient: 'from-purple-400 to-purple-600' },
-    { id: 'budget', icon: TrendingUp, label: 'Budget Tracker', gradient: 'from-orange-400 to-orange-600' },
-    { id: 'settings', icon: Settings, label: 'Settings', gradient: 'from-gray-400 to-gray-600' },
+    { id: 'dashboard', icon: Home, label: 'Dashboard', gradient: 'from-emerald-400 to-emerald-600', path: '/dashboard' },
+    { id: 'meal-plans', icon: Calendar, label: 'Meal Plans', gradient: 'from-blue-400 to-blue-600', path: '/meal-plans' },
+    { id: 'grocery', icon: ShoppingCart, label: 'Grocery List', gradient: 'from-purple-400 to-purple-600', path: '/grocery' },
+    { id: 'budget', icon: TrendingUp, label: 'Budget Tracker', gradient: 'from-orange-400 to-orange-600', path: '/budget' },
+    { id: 'settings', icon: Settings, label: 'Settings', gradient: 'from-gray-400 to-gray-600', path: '/settings' },
   ];
 
   // Close profile menu when clicking outside
@@ -45,6 +47,11 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
   const handleConfirmLogout = () => {
     setShowLogoutConfirm(false);
     onLogout();
+  };
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    setIsMobileOpen(false); // Close mobile menu after navigation
   };
 
   const SidebarContent = () => (
@@ -86,6 +93,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
           return (
             <button
               key={item.id}
+              onClick={() => handleNavigate(item.path)}
               className={`relative w-full group flex items-center gap-3.5 px-4 py-3.5 rounded-2xl transition-all duration-300 cursor-pointer overflow-hidden ${
                 isActive
                   ? 'bg-linear-to-r from-emerald-500/10 to-emerald-600/10 shadow-md shadow-emerald-200/50'
@@ -132,12 +140,12 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
           >
             <div className="relative">
               <div className="w-12 h-12 bg-linear-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-emerald-300/50 group-hover:shadow-xl transition-shadow">
-                JD
+                AC
               </div>
               <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-linear-to-br from-green-400 to-emerald-500 rounded-full border-3 border-white shadow-md"></div>
             </div>
             <div className="flex-1 text-left">
-              <div className="font-bold text-sm text-gray-900">John Doe</div>
+              <div className="font-bold text-sm text-gray-900">Aaron Cumahig</div>
               <div className="text-xs font-semibold bg-linear-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Premium Plan ✨</div>
             </div>
           </button>
