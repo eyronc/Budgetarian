@@ -9,7 +9,7 @@ import { GroceryListPage } from './pages/GroceryListPage';
 import { BudgetTrackerPage } from './pages/BudgetTrackerPage';
 import { SettingsPage } from './pages/SettingsPage';
 
-export default function App() {
+function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
 
   if (isLoading) {
@@ -17,15 +17,21 @@ export default function App() {
   }
 
   return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/meal-plans" element={<MealPlansPage />} />
+      <Route path="/grocery" element={<GroceryListPage />} />
+      <Route path="/budget" element={<BudgetTrackerPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
+    </Routes>
+  );
+}
+
+export default function App() {
+  return (
     <DarkModeProvider>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/meal-plans" element={<MealPlansPage />} />
-        <Route path="/grocery" element={<GroceryListPage />} />
-        <Route path="/budget" element={<BudgetTrackerPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-      </Routes>
+      <AppContent />
     </DarkModeProvider>
   );
 }
