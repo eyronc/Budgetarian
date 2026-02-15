@@ -1,3 +1,5 @@
+import { useDarkMode } from '../../contexts/DarkModeContext';
+
 interface BrandNameProps {
   showTagline?: boolean;
   size?: 'small' | 'medium' | 'large';
@@ -5,6 +7,7 @@ interface BrandNameProps {
 }
 
 export function BrandName({ showTagline = false, size = 'medium', align = 'left' }: BrandNameProps) {
+  const { darkMode } = useDarkMode();
   const textSizes = {
     small: {
       name: 'text-lg sm:text-xl',
@@ -24,12 +27,21 @@ export function BrandName({ showTagline = false, size = 'medium', align = 'left'
 
   return (
     <div className={alignClass}>
-      <span className={`${textSizes[size].name} font-bold text-gray-900 block leading-none`}>
-        Budget<span 
-          className="bg-clip-text text-transparent"
-          style={{ backgroundImage: 'linear-gradient(to right, #16A34A, #65A30D)' }}
-        >arian</span>
+      <span
+        className={`${textSizes[size].name} font-bold transition-colors block leading-none ${
+          darkMode ? 'text-gray-200' : 'text-gray-900'
+        }`}
+      >
+        Budget
+        <span className="text-green-600">arian</span>
       </span>
+
+
+      {/*<span className={`text-sm font-semibold transition-colors ${
+              darkMode ? 'text-gray-200' : 'text-gray-900'
+            }`}>
+              Budget<span className="text-green-600">arian</span>
+            </span> */}
       {showTagline && (
         <span className={`${textSizes[size].tagline} text-green-600 font-medium block mt-1`}>
           Smart Meal Planning

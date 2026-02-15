@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Lock, Mail, X } from 'lucide-react';
 import { BudgetarianLogo } from '../branding/BudgetarianLogo';
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 interface LoginFormProps {
   onClose: () => void;
@@ -12,6 +13,7 @@ export function LoginForm({ onClose, onLogin, onSwitchToRegister }: LoginFormPro
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { darkMode } = useDarkMode();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,24 +33,34 @@ export function LoginForm({ onClose, onLogin, onSwitchToRegister }: LoginFormPro
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-md relative animate-fade-in"
+        className={`rounded-2xl shadow-2xl w-full max-w-md relative animate-fade-in transition-colors ${
+          darkMode ? 'bg-gray-800' : 'bg-white'
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+          className={`absolute top-4 right-4 p-2 transition-colors cursor-pointer ${
+            darkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'
+          }`}
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
-        <div className="p-8 pb-6 text-center border-b border-gray-100">
+        <div className={`p-8 pb-6 text-center border-b transition-colors ${
+          darkMode ? 'border-gray-700' : 'border-gray-100'
+        }`}>
           <div className="flex justify-center mb-4">
             <BudgetarianLogo size="medium" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-          <p className="text-gray-600 text-sm">Sign in to continue your journey</p>
+          <h2 className={`text-2xl font-bold mb-2 transition-colors ${
+            darkMode ? 'text-gray-100' : 'text-gray-900'
+          }`}>Welcome Back</h2>
+          <p className={`text-sm transition-colors ${
+            darkMode ? 'text-gray-400' : 'text-gray-600'
+          }`}>Sign in to continue your journey</p>
         </div>
 
         {/* Form */}
@@ -61,7 +73,9 @@ export function LoginForm({ onClose, onLogin, onSwitchToRegister }: LoginFormPro
 
           {/* Email field */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2 cursor-default">
+            <label className={`block text-sm font-medium mb-2 cursor-default transition-colors ${
+              darkMode ? 'text-gray-300' : 'text-gray-700'
+            }`}>
               Email Address
             </label>
             <div className="relative">
@@ -70,7 +84,11 @@ export function LoginForm({ onClose, onLogin, onSwitchToRegister }: LoginFormPro
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-text"
+                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-text transition-colors ${
+                  darkMode 
+                    ? 'bg-gray-700 border-gray-600 text-gray-200 placeholder-gray-500' 
+                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+                }`}
                 placeholder="you@example.com"
                 required
               />
@@ -79,7 +97,9 @@ export function LoginForm({ onClose, onLogin, onSwitchToRegister }: LoginFormPro
 
           {/* Password field */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2 cursor-default">
+            <label className={`block text-sm font-medium mb-2 cursor-default transition-colors ${
+              darkMode ? 'text-gray-300' : 'text-gray-700'
+            }`}>
               Password
             </label>
             <div className="relative">
@@ -88,7 +108,11 @@ export function LoginForm({ onClose, onLogin, onSwitchToRegister }: LoginFormPro
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-text"
+                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-text transition-colors ${
+                  darkMode 
+                    ? 'bg-gray-700 border-gray-600 text-gray-200 placeholder-gray-500' 
+                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+                }`}
                 placeholder="••••••••"
                 required
               />
@@ -98,14 +122,15 @@ export function LoginForm({ onClose, onLogin, onSwitchToRegister }: LoginFormPro
           {/* Submit button */}
           <button
             type="submit"
-            className="w-full py-3 text-white font-semibold rounded-lg transition-all hover:shadow-lg hover:scale-105 cursor-pointer"
-            style={{ background: 'linear-gradient(to right, #16A34A, #65A30D)' }}
+            className="w-full py-3 bg-linear-to-r from-emerald-500 to-lime-600 text-white font-semibold rounded-lg transition-all hover:shadow-lg hover:scale-105 cursor-pointer"
           >
             Sign In
           </button>
 
           {/* Switch to register */}
-          <p className="text-center text-sm text-gray-600 mt-6 select-none">
+          <p className={`text-center text-sm mt-6 select-none transition-colors ${
+            darkMode ? 'text-gray-400' : 'text-gray-600'
+          }`}>
             Don't have an account?{' '}
             <button
               type="button"

@@ -53,7 +53,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
 
   const handleNavigate = (path: string) => {
     navigate(path);
-    setIsMobileOpen(false); // Close mobile menu after navigation
+    setIsMobileOpen(false);
   };
 
   const SidebarContent = () => (
@@ -69,7 +69,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
           : 'bg-linear-to-br from-emerald-200/40 to-transparent'
       }`}></div>
       
-      {/* Compact Header */}
+      {/* Header with close button for mobile */}
       <div className={`relative p-5 backdrop-blur-sm transition-colors ${
         darkMode 
           ? 'border-b border-gray-700/50 bg-gray-800/80' 
@@ -83,9 +83,8 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
                 : 'bg-white border-gray-100'
             }`}>
               <BudgetarianLogo size="small" />
-              <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-linear-to-br from-yellow-300 to-orange-400 rounded-full border-2 border-white animate-pulse"></div>
             </div>
-            <div className="hidden sm:block">
+            <div>
               <div className="font-bold text-lg tracking-tight leading-none">
                 <span className={darkMode ? 'text-gray-100' : 'text-gray-900'}>Budget</span>
                 <span className="bg-clip-text text-transparent bg-linear-to-r from-[#16A34A] to-[#65A30D]">arian</span>
@@ -95,6 +94,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
               }`}>Smart Meal Planning</div>
             </div>
           </div>
+          {/* Close button - mobile only */}
           <button
             onClick={() => setIsMobileOpen(false)}
             className={`lg:hidden p-2.5 rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 ${
@@ -108,7 +108,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
         </div>
       </div>
 
-      {/* Compact Navigation */}
+      {/* Navigation */}
       <nav className="relative flex-1 p-4 space-y-2 overflow-y-auto">
         {menuItems.map((item) => {
           const Icon = item.icon;
@@ -129,7 +129,6 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
               }`}
               title={item.label}
             >
-              {/* Active indicator */}
               {isActive && (
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-10 bg-linear-to-b from-emerald-400 to-emerald-600 rounded-r-full shadow-lg shadow-emerald-300/50"></div>
               )}
@@ -162,7 +161,6 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
                 {item.label}
               </span>
               
-              {/* Hover glow effect */}
               <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
                 !isActive 
                   ? darkMode 
@@ -175,7 +173,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
         })}
       </nav>
 
-      {/* Compact User Profile with Dropdown */}
+      {/* User Profile */}
       <div className={`relative p-4 backdrop-blur-sm transition-colors ${
         darkMode 
           ? 'border-t border-gray-700/50 bg-gray-800/60' 
@@ -204,7 +202,6 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
             </div>
           </button>
 
-          {/* Dropdown Menu */}
           {showProfileMenu && (
             <div className={`absolute bottom-full left-0 right-0 mb-3 rounded-2xl shadow-2xl border py-3 z-50 animate-scale-in backdrop-blur-xl transition-colors ${
               darkMode 
@@ -254,21 +251,35 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
 
   return (
     <>
-      {/* Mobile menu button */}
-      <button
-        onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className={`lg:hidden fixed top-5 left-5 z-50 p-3.5 backdrop-blur-md rounded-2xl shadow-xl border hover:shadow-2xl hover:scale-105 transition-all duration-200 cursor-pointer ${
+      {/* Mobile Navigation Bar - Only visible on mobile when sidebar is closed */}
+      {!isMobileOpen && (
+        <div className={`lg:hidden fixed top-0 left-0 right-0 z-40 backdrop-blur-md border-b transition-colors ${
           darkMode 
-            ? 'bg-gray-800/90 border-gray-700/50' 
-            : 'bg-white/90 border-emerald-100/50'
-        }`}
-      >
-        {isMobileOpen ? (
-          <X className={`w-5 h-5 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`} />
-        ) : (
-          <Menu className={`w-5 h-5 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`} />
-        )}
-      </button>
+            ? 'bg-gray-900/95 border-gray-700/50' 
+            : 'bg-white/95 border-emerald-100/50'
+        }`}>
+          <div className="flex items-center justify-between p-4">
+            <button
+              onClick={() => setIsMobileOpen(true)}
+              className={`p-2.5 rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 ${
+                darkMode 
+                  ? 'hover:bg-gray-700/60' 
+                  : 'hover:bg-emerald-100/60'
+              }`}
+            >
+              <Menu className={`w-5 h-5 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`} />
+            </button>
+            <div className="flex items-center gap-2">
+              <BudgetarianLogo size="small" />
+              <div className="font-bold text-base tracking-tight leading-none">
+                <span className={darkMode ? 'text-gray-100' : 'text-gray-900'}>Budget</span>
+                <span className="bg-clip-text text-transparent bg-linear-to-r from-[#16A34A] to-[#65A30D]">arian</span>
+              </div>
+            </div>
+            <div className="w-10"></div> {/* Spacer for centering */}
+          </div>
+        </div>
+      )}
 
       {/* Mobile overlay */}
       {isMobileOpen && (
@@ -278,7 +289,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
         />
       )}
 
-      {/* Sidebar - Desktop (always visible, no toggle) */}
+      {/* Sidebar - Desktop */}
       <aside className={`hidden lg:flex lg:flex-col w-64 backdrop-blur-xl border-r h-screen sticky top-0 shadow-sm transition-colors duration-300 ${
         darkMode 
           ? 'bg-gray-900/95 border-gray-700/50' 
@@ -304,31 +315,26 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
           <div className={`rounded-3xl p-10 max-w-sm w-full shadow-2xl animate-scale-in relative overflow-hidden transition-colors ${
             darkMode ? 'bg-gray-800' : 'bg-white'
           }`}>
-            {/* Decorative gradient background */}
             <div className="absolute top-0 right-0 w-40 h-40 bg-linear-to-br from-red-100/60 to-orange-100/40 rounded-full blur-3xl -translate-y-20 translate-x-20"></div>
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-linear-to-tr from-red-50/80 to-transparent rounded-full blur-2xl translate-y-16 -translate-x-16"></div>
             
             <div className="relative text-center">
-              {/* Beautiful icon with gradient */}
               <div className="w-20 h-20 bg-linear-to-br from-red-500 to-red-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-red-300/60 transform hover:scale-105 transition-transform">
                 <LogOut className="w-9 h-9 text-white" />
               </div>
               
-              {/* Bold heading */}
               <h3 className={`text-2xl font-bold mb-3 transition-colors ${
                 darkMode ? 'text-gray-100' : 'text-gray-900'
               }`}>
                 Ready to Leave?
               </h3>
               
-              {/* Refined description */}
               <p className={`text-sm mb-8 leading-relaxed max-w-xs mx-auto transition-colors ${
                 darkMode ? 'text-gray-400' : 'text-gray-600'
               }`}>
                 You're about to logout from your account. Any unsaved work will be lost.
               </p>
               
-              {/* Premium buttons */}
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowLogoutConfirm(false)}

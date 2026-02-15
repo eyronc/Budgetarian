@@ -80,7 +80,7 @@ export function MealPlansPage() {
     }`}>
       <Sidebar onLogout={handleLogout} activeSection="meal-plans" />
       
-      <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+      <div className="flex-1 mt-5 pt-20 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>

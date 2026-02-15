@@ -3,6 +3,7 @@ import { BudgetarianLogo } from '../branding/BudgetarianLogo';
 import { BrandName } from '../branding/BrandName';
 import { Spinner } from './Spinner';
 import { ProgressBar } from './ProgressBar';
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
@@ -10,6 +11,7 @@ interface LoadingScreenProps {
 
 export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
+  const { darkMode } = useDarkMode();
 
   useEffect(() => {
     const duration = 3000; // 3 seconds total
@@ -24,7 +26,7 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
           clearInterval(timer);
           setTimeout(() => {
             onLoadingComplete();
-          }, 300); // Small delay after reaching 100%
+          }, 300);
           return 100;
         }
         
@@ -37,8 +39,11 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
 
   return (
     <div 
-      className="fixed inset-0 flex flex-col items-center justify-center z-50"
-      style={{ background: 'linear-gradient(to bottom right, white, #F0FDF4, #DCFCE7)' }}
+      className={`fixed inset-0 flex flex-col items-center justify-center z-50 transition-colors duration-300 ${
+        darkMode
+          ? 'bg-linear-to-br from-gray-900 via-slate-900 to-gray-800'
+          : 'bg-linear-to-br from-white via-emerald-50 to-green-50'
+      }`}
     >
       {/* Logo and branding */}
       <div className="flex flex-col items-center mb-12 animate-fade-in">
@@ -58,7 +63,9 @@ export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
       <ProgressBar progress={Math.round(progress)} />
 
       {/* Loading text */}
-      <p className="text-gray-600 mt-8 animate-pulse">
+      <p className={`mt-8 animate-pulse transition-colors ${
+        darkMode ? 'text-gray-400' : 'text-gray-600'
+      }`}>
         {progress < 30 && "Preparing your experience..."}
         {progress >= 30 && progress < 60 && "Loading meal plans..."}
         {progress >= 60 && progress < 90 && "Optimizing nutrition..."}

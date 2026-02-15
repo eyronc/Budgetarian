@@ -4,9 +4,11 @@ import { Layout } from '../components/layout/Layout';
 import { LoginForm } from '../components/auth/LoginForm';
 import { RegisterForm } from '../components/auth/RegisterForm';
 import { ArrowRight, DollarSign, Apple, TrendingDown } from 'lucide-react';
+import { useDarkMode } from '../contexts/DarkModeContext';
 
 export function LandingPage() {
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
 
@@ -35,32 +37,43 @@ export function LandingPage() {
     <>
       <Layout onSignIn={() => setShowLoginForm(true)} onGetStarted={() => setShowRegisterForm(true)}>
         {/* Hero Section */}
-        <section className="px-6 sm:px-8 pt-12 sm:pt-16 pb-20 sm:pb-24 relative overflow-hidden" style={{ background: 'linear-gradient(to bottom, white, #F0FDF4)' }}>
+        <section className={`px-6 sm:px-8 pt-12 sm:pt-16 pb-20 sm:pb-24 relative overflow-hidden transition-colors ${
+          darkMode 
+            ? 'bg-linear-to-b from-gray-900 to-gray-800' 
+            : 'bg-linear-to-b from-white to-emerald-50'
+        }`}>
           {/* Animated background elements */}
-          <div className="absolute top-20 right-10 w-72 h-72 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" />
-          <div className="absolute bottom-20 left-10 w-72 h-72 bg-lime-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float-delayed" />
+          <div className={`absolute top-20 right-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float ${
+            darkMode ? 'bg-emerald-900' : 'bg-green-100'
+          }`} />
+          <div className={`absolute bottom-20 left-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float-delayed ${
+            darkMode ? 'bg-lime-900' : 'bg-lime-100'
+          }`} />
 
           <div className="max-w-6xl mx-auto relative z-10">
             <div className="text-center max-w-4xl mx-auto mb-16 sm:mb-20 animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#DCFCE7] text-[#16A34A] rounded-full text-sm font-medium mb-6">
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${
+                darkMode 
+                  ? 'bg-emerald-900/30 text-emerald-400' 
+                  : 'bg-emerald-100 text-emerald-700'
+              }`}>
                 <TrendingDown className="w-4 h-4" />
                 Save money, eat healthy
               </div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6" style={{ lineHeight: '1.1', letterSpacing: '-0.02em' }}>
+              <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 transition-colors ${
+                darkMode ? 'text-gray-100' : 'text-gray-900'
+              }`} style={{ lineHeight: '1.1', letterSpacing: '-0.02em' }}>
                 Healthy meals on
                 <br />
-                <span style={{
-                  backgroundImage: 'linear-gradient(to right, #16A34A, #65A30D)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}>
+                <span className="bg-linear-to-r from-emerald-500 to-lime-600 bg-clip-text text-transparent">
                   your budget
                 </span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-gray-600 mb-10 sm:mb-12 max-w-3xl mx-auto" style={{ lineHeight: '1.6' }}>
+              <p className={`text-lg sm:text-xl mb-10 sm:mb-12 max-w-3xl mx-auto transition-colors ${
+                darkMode ? 'text-gray-400' : 'text-gray-600'
+              }`} style={{ lineHeight: '1.6' }}>
                 AI-powered meal planning that maximizes nutrition while staying within your spending limit.
                 Perfect for students, families, and budget-conscious eaters.
               </p>
@@ -68,15 +81,18 @@ export function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <button
                   onClick={() => setShowLoginForm(true)}
-                  className="w-full sm:w-auto px-8 py-3.5 text-white font-semibold rounded-full hover:shadow-xl hover:scale-105 transition-all cursor-pointer inline-flex items-center justify-center gap-2 text-base"
-                  style={{ background: 'linear-gradient(to right, #16A34A, #65A30D)' }}
+                  className="w-full sm:w-auto px-8 py-3.5 bg-linear-to-r from-emerald-500 to-lime-600 text-white font-semibold rounded-full hover:shadow-xl hover:scale-105 transition-all cursor-pointer inline-flex items-center justify-center gap-2 text-base"
                 >
                   Start Planning Meals
                   <ArrowRight className="w-5 h-5" />
                 </button>
                 <button
                   onClick={scrollToHowItWorks}
-                  className="w-full sm:w-auto px-8 py-3.5 bg-white text-gray-700 font-semibold rounded-full border-2 border-gray-200 hover:border-[#16A34A] hover:scale-105 transition-all cursor-pointer text-base"
+                  className={`w-full sm:w-auto px-8 py-3.5 font-semibold rounded-full border-2 hover:scale-105 transition-all cursor-pointer text-base ${
+                    darkMode 
+                      ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-emerald-500' 
+                      : 'bg-white text-gray-700 border-gray-200 hover:border-emerald-500'
+                  }`}
                 >
                   See How It Works
                 </button>
@@ -88,19 +104,19 @@ export function LandingPage() {
               {[
                 {
                   icon: DollarSign,
-                  gradient: 'linear-gradient(to bottom right, #16A34A, #65A30D)',
+                  gradient: 'from-emerald-500 to-lime-600',
                   title: 'Budget-Based',
                   description: 'Set your weekly or monthly food budget. Our AI creates meal plans that never exceed your limit.',
                 },
                 {
                   icon: Apple,
-                  gradient: 'linear-gradient(to bottom right, #F59E0B, #EAB308)',
+                  gradient: 'from-amber-500 to-yellow-600',
                   title: 'Nutrition-Optimized',
                   description: 'Get balanced meals with proper protein, carbs, and nutrients - without breaking the bank.',
                 },
                 {
                   icon: TrendingDown,
-                  gradient: 'linear-gradient(to bottom right, #0EA5E9, #14B8A6)',
+                  gradient: 'from-sky-500 to-teal-600',
                   title: 'Smart Shopping',
                   description: 'Auto-generated grocery lists with price estimates and money-saving ingredient swaps.',
                 },
@@ -109,19 +125,26 @@ export function LandingPage() {
                 return (
                   <div
                     key={idx}
-                    className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-2 transition-all duration-300 animate-slide-up"
+                    className={`rounded-3xl p-8 border hover:shadow-lg hover:-translate-y-2 transition-all duration-300 animate-slide-up ${
+                      darkMode 
+                        ? 'bg-gray-800/50 border-gray-700/50' 
+                        : 'bg-white shadow-sm border-gray-100'
+                    }`}
                     style={{ animationDelay: `${idx * 100}ms` }}
                   >
                     <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 hover:rotate-12 hover:scale-110 transition-transform duration-300"
-                      style={{ background: card.gradient }}
+                      className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 hover:rotate-12 hover:scale-110 transition-transform duration-300 bg-linear-to-br ${card.gradient}`}
                     >
                       <Icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                    <h3 className={`text-2xl font-bold mb-3 transition-colors ${
+                      darkMode ? 'text-gray-100' : 'text-gray-900'
+                    }`}>
                       {card.title}
                     </h3>
-                    <p className="text-base text-gray-600" style={{ lineHeight: '1.6' }}>
+                    <p className={`text-base transition-colors ${
+                      darkMode ? 'text-gray-400' : 'text-gray-600'
+                    }`} style={{ lineHeight: '1.6' }}>
                       {card.description}
                     </p>
                   </div>
@@ -132,15 +155,23 @@ export function LandingPage() {
         </section>
 
         {/* How It Works */}
-        <section id="how-it-works" className="px-6 sm:px-8 py-20 sm:py-24 bg-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-green-50 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float" />
+        <section id="how-it-works" className={`px-6 sm:px-8 py-20 sm:py-24 relative overflow-hidden transition-colors ${
+          darkMode ? 'bg-gray-800' : 'bg-white'
+        }`}>
+          <div className={`absolute top-0 right-0 w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float ${
+            darkMode ? 'bg-emerald-900' : 'bg-green-50'
+          }`} />
 
           <div className="max-w-5xl mx-auto relative z-10">
             <div className="text-center mb-16 animate-fade-in">
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+              <h2 className={`text-4xl sm:text-5xl font-bold mb-4 transition-colors ${
+                darkMode ? 'text-gray-100' : 'text-gray-900'
+              }`}>
                 How it works
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className={`text-xl transition-colors ${
+                darkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 Three simple steps to healthier, budget-friendly eating
               </p>
             </div>
@@ -149,22 +180,22 @@ export function LandingPage() {
               {[
                 {
                   number: '1',
-                  bgColor: '#DCFCE7',
-                  textColor: '#16A34A',
+                  bgColor: darkMode ? 'bg-emerald-900/30' : 'bg-emerald-100',
+                  textColor: darkMode ? 'text-emerald-400' : 'text-emerald-700',
                   title: 'Set Your Budget',
                   description: 'Tell us your daily or weekly food budget. Set preferences for diet type and health goals.',
                 },
                 {
                   number: '2',
-                  bgColor: '#FEF3C7',
-                  textColor: '#F59E0B',
+                  bgColor: darkMode ? 'bg-amber-900/30' : 'bg-amber-100',
+                  textColor: darkMode ? 'text-amber-400' : 'text-amber-700',
                   title: 'AI Plans Your Meals',
                   description: 'Our AI creates a complete meal plan optimized for nutrition and cost based on local prices.',
                 },
                 {
                   number: '3',
-                  bgColor: '#DBEAFE',
-                  textColor: '#0EA5E9',
+                  bgColor: darkMode ? 'bg-sky-900/30' : 'bg-sky-100',
+                  textColor: darkMode ? 'text-sky-400' : 'text-sky-700',
                   title: 'Shop & Cook',
                   description: 'Get your grocery list with estimated costs. Follow simple recipes matched to your skill level.',
                 },
@@ -175,17 +206,21 @@ export function LandingPage() {
                   style={{ animationDelay: `${idx * 150}ms` }}
                 >
                   <div
-                    className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in"
-                    style={{ backgroundColor: step.bgColor, animationDelay: `${idx * 150}ms` }}
+                    className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in ${step.bgColor}`}
+                    style={{ animationDelay: `${idx * 150}ms` }}
                   >
-                    <span className="text-3xl font-bold" style={{ color: step.textColor }}>
+                    <span className={`text-3xl font-bold ${step.textColor}`}>
                       {step.number}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  <h3 className={`text-xl font-bold mb-3 transition-colors ${
+                    darkMode ? 'text-gray-100' : 'text-gray-900'
+                  }`}>
                     {step.title}
                   </h3>
-                  <p className="text-base text-gray-600" style={{ lineHeight: '1.6' }}>
+                  <p className={`text-base transition-colors ${
+                    darkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`} style={{ lineHeight: '1.6' }}>
                     {step.description}
                   </p>
                 </div>
@@ -195,10 +230,7 @@ export function LandingPage() {
         </section>
 
         {/* Stats Section */}
-        <section
-          className="px-6 sm:px-8 py-16 sm:py-20 relative overflow-hidden"
-          style={{ background: 'linear-gradient(to bottom right, #16A34A, #65A30D)' }}
-        >
+        <section className="px-6 sm:px-8 py-16 sm:py-20 relative overflow-hidden bg-linear-to-br from-emerald-500 to-lime-600">
           <div className="absolute inset-0 opacity-10 animate-pattern" style={{
             backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)',
             backgroundSize: '50px 50px',
@@ -215,7 +247,7 @@ export function LandingPage() {
                   <div className="text-5xl sm:text-6xl font-bold mb-3 animate-scale-in" style={{ animationDelay: `${idx * 100}ms` }}>
                     {item.stat}
                   </div>
-                  <div className="text-lg text-green-100">{item.label}</div>
+                  <div className="text-lg text-emerald-100">{item.label}</div>
                 </div>
               ))}
             </div>
@@ -223,7 +255,7 @@ export function LandingPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="px-6 sm:px-8 py-20 sm:py-24 relative overflow-hidden" style={{ background: 'linear-gradient(to bottom right, #16A34A, #65A30D)' }}>
+        <section className="px-6 sm:px-8 py-20 sm:py-24 relative overflow-hidden bg-linear-to-br from-emerald-500 to-lime-600">
           <div className="max-w-4xl mx-auto text-center relative z-10 animate-fade-in">
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6" style={{ lineHeight: '1.15' }}>
               Ready to eat healthy
@@ -235,7 +267,7 @@ export function LandingPage() {
             </p>
             <button
               onClick={() => setShowRegisterForm(true)}
-              className="px-10 py-4 bg-white text-green-600 font-semibold rounded-full hover:shadow-2xl hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2 text-lg"
+              className="px-10 py-4 bg-white text-emerald-600 font-semibold rounded-full hover:shadow-2xl hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2 text-lg"
             >
               Start Your Free Meal Plan
               <ArrowRight className="w-5 h-5" />

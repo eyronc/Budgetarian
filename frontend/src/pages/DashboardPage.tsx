@@ -31,7 +31,7 @@ export function DashboardPage() {
     }`}>
       <Sidebar onLogout={handleLogout} activeSection="dashboard" />
       
-      <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+      <div className="flex-1 mt-5 pt-20 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
         <div className="mb-6 sm:mb-8">
           <h1 className={`text-3xl sm:text-4xl lg:text-5xl font-black mb-2 tracking-tight pb-1 transition-colors ${
             darkMode
