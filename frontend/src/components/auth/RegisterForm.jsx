@@ -3,13 +3,7 @@ import { Lock, Mail, User, X, Phone } from 'lucide-react';
 import { BudgetarianLogo } from '../branding/BudgetarianLogo';
 import { useDarkMode } from '../../contexts/DarkModeContext';
 
-interface RegisterFormProps {
-  onClose: () => void;
-  onRegister: (email: string, password: string, name: string) => void;
-  onSwitchToLogin: () => void;
-}
-
-export function RegisterForm({ onClose, onRegister, onSwitchToLogin }: RegisterFormProps) {
+export function RegisterForm({ onClose, onRegister, onSwitchToLogin }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +14,7 @@ export function RegisterForm({ onClose, onRegister, onSwitchToLogin }: RegisterF
   const [showTerms, setShowTerms] = useState(false);
   const { darkMode } = useDarkMode();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
 

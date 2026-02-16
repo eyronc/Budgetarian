@@ -1,12 +1,6 @@
 import { useDarkMode } from '../../contexts/DarkModeContext';
 
-interface BrandNameProps {
-  showTagline?: boolean;
-  size?: 'small' | 'medium' | 'large';
-  align?: 'left' | 'center';
-}
-
-export function BrandName({ showTagline = false, size = 'medium', align = 'left' }: BrandNameProps) {
+export function BrandName({ showTagline = false, size = 'medium', align = 'left' }) {
   const { darkMode } = useDarkMode();
   const textSizes = {
     small: {

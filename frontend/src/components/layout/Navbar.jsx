@@ -2,12 +2,7 @@ import { BudgetarianLogo } from '../branding/BudgetarianLogo';
 import { BrandName } from '../branding/BrandName';
 import { useDarkMode } from '../../contexts/DarkModeContext';
 
-interface NavbarProps {
-  onSignIn?: () => void;
-  onGetStarted?: () => void;
-}
-
-export function Navbar({ onSignIn, onGetStarted }: NavbarProps) {
+export function Navbar({ onSignIn, onGetStarted }) {
   const { darkMode } = useDarkMode();
 
   return (

@@ -12,14 +12,14 @@ export function LandingPage() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
 
-  const handleLogin = (email: string, _password: string) => {
+  const handleLogin = (email, _password) => {
     localStorage.setItem('userEmail', email);
     localStorage.setItem('isAuthenticated', 'true');
     setShowLoginForm(false);
     navigate('/dashboard');
   };
 
-  const handleRegister = (email: string, _password: string, _name: string) => {
+  const handleRegister = (email, _password, _name) => {
     localStorage.setItem('userEmail', email);
     localStorage.setItem('isAuthenticated', 'true');
     setShowRegisterForm(false);

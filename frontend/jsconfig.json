@@ -1,0 +1,6 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./jsconfig.node.json" }
+  ]
+}

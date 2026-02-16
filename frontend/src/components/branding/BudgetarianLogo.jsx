@@ -1,10 +1,6 @@
 import { useId } from 'react';
 
-interface LogoProps {
-  size?: 'small' | 'medium' | 'large';
-}
-
-export function BudgetarianLogo({ size = 'medium' }: LogoProps) {
+export function BudgetarianLogo({ size = 'medium' }) {
   const gradientId = useId();
 
   const dimensions = {

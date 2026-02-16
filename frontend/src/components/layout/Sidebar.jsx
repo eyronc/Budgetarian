@@ -4,18 +4,13 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDarkMode } from '../../contexts/DarkModeContext';
 
-interface SidebarProps {
-  onLogout: () => void;
-  activeSection?: string;
-}
-
-export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps) {
+export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
   const navigate = useNavigate();
   const { darkMode } = useDarkMode();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  const profileMenuRef = useRef<HTMLDivElement>(null);
+  const profileMenuRef = useRef(null);
 
   const menuItems = [
     { id: 'dashboard', icon: Home, label: 'Dashboard', gradient: 'from-emerald-400 to-emerald-600', path: '/dashboard' },
@@ -27,8 +22,8 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
 
   // Close profile menu when clicking outside
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+    function handleClickOutside(event) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
         setShowProfileMenu(false);
       }
     }
@@ -51,7 +46,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }: SidebarProps)
     onLogout();
   };
 
-  const handleNavigate = (path: string) => {
+  const handleNavigate = (path) => {
     navigate(path);
     setIsMobileOpen(false);
   };

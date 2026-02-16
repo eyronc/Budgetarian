@@ -27,9 +27,9 @@ export function SettingsPage() {
       icon: User,
       gradient: 'from-emerald-400 to-emerald-600',
       settings: [
-        { label: 'Full Name', value: 'Aaron Cumahig', type: 'text' as const, icon: User },
-        { label: 'Email Address', value: 'eyronc@gmail.com', type: 'email' as const, icon: Mail },
-        { label: 'Phone Number', value: '+639696969696', type: 'tel' as const, icon: Phone },
+        { label: 'Full Name', value: 'Aaron Cumahig', type: 'text', icon: User },
+        { label: 'Email Address', value: 'eyronc@gmail.com', type: 'email', icon: Mail },
+        { label: 'Phone Number', value: '+639696969696', type: 'tel', icon: Phone },
       ]
     },
     {
@@ -37,9 +37,9 @@ export function SettingsPage() {
       icon: Globe,
       gradient: 'from-blue-400 to-blue-600',
       settings: [
-        { label: 'Language', value: 'English', type: 'select' as const, options: ['English', 'Filipino', 'Spanish'] },
-        { label: 'Currency', value: 'PHP (₱)', type: 'select' as const, options: ['PHP (₱)', 'USD ($)', 'EUR (€)'] },
-        { label: 'Time Zone', value: 'Asia/Manila (UTC+8)', type: 'select' as const, options: ['Asia/Manila (UTC+8)', 'UTC', 'PST (UTC-8)'] },
+        { label: 'Language', value: 'English', type: 'select', options: ['English', 'Filipino', 'Spanish'] },
+        { label: 'Currency', value: 'PHP (₱)', type: 'select', options: ['PHP (₱)', 'USD ($)', 'EUR (€)'] },
+        { label: 'Time Zone', value: 'Asia/Manila (UTC+8)', type: 'select', options: ['Asia/Manila (UTC+8)', 'UTC', 'PST (UTC-8)'] },
       ]
     },
     {
@@ -47,9 +47,9 @@ export function SettingsPage() {
       icon: CreditCard,
       gradient: 'from-orange-400 to-orange-600',
       settings: [
-        { label: 'Weekly Budget', value: '₱150', type: 'number' as const },
-        { label: 'Monthly Budget', value: '₱600', type: 'number' as const },
-        { label: 'Alert Threshold', value: '90%', type: 'number' as const },
+        { label: 'Weekly Budget', value: '₱150', type: 'number' },
+        { label: 'Monthly Budget', value: '₱600', type: 'number' },
+        { label: 'Alert Threshold', value: '90%', type: 'number' },
       ]
     },
   ];
@@ -103,7 +103,7 @@ export function SettingsPage() {
                     
                     <div className="space-y-4 sm:space-y-5">
                       {section.settings.map((setting, settingIdx) => {
-                        const SettingIcon = 'icon' in setting ? setting.icon : undefined;
+                        const SettingIcon = setting.icon;
                         return (
                           <div key={settingIdx}>
                             <label className={`flex items-center gap-2 text-xs sm:text-sm font-bold mb-2 transition-colors ${
@@ -112,7 +112,7 @@ export function SettingsPage() {
                               {SettingIcon && <SettingIcon className="w-4 h-4" />}
                               {setting.label}
                             </label>
-                            {setting.type === 'select' && 'options' in setting ? (
+                            {setting.type === 'select' ? (
                               <select
                                 defaultValue={setting.value}
                                 className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-xl font-semibold focus:outline-none focus:ring-2 transition-all cursor-pointer ${
@@ -121,7 +121,7 @@ export function SettingsPage() {
                                     : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500'
                                 }`}
                               >
-                                {setting.options?.map((option: string) => (
+                                {setting.options.map((option) => (
                                   <option key={option} value={option}>{option}</option>
                                 ))}
                               </select>

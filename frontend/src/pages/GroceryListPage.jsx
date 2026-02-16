@@ -7,7 +7,7 @@ import { useDarkMode } from '../contexts/DarkModeContext';
 export function GroceryListPage() {
   const navigate = useNavigate();
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-  const [checkedItems, setCheckedItems] = useState<Set<number>>(new Set());
+  const [checkedItems, setCheckedItems] = useState(new Set());
   const { darkMode } = useDarkMode();
 
   const handleLogout = () => {
@@ -63,7 +63,7 @@ export function GroceryListPage() {
     },
   ];
 
-  const toggleItem = (id: number) => {
+  const toggleItem = (id) => {
     const newChecked = new Set(checkedItems);
     if (newChecked.has(id)) {
       newChecked.delete(id);

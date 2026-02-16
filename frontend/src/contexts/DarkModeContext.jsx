@@ -1,17 +1,11 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import type { ReactNode } from 'react';
 
-interface DarkModeContextType {
-  darkMode: boolean;
-  setDarkMode: (value: boolean) => void;
-}
-
-const DarkModeContext = createContext<DarkModeContextType>({
+const DarkModeContext = createContext({
   darkMode: false,
   setDarkMode: () => {},
 });
 
-export function DarkModeProvider({ children }: { children: ReactNode }) {
+export function DarkModeProvider({ children }) {
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode');
     return saved === 'true';

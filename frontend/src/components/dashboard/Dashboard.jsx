@@ -1,10 +1,6 @@
 import { TrendingUp, Calendar, Utensils, Apple, Flame, DollarSign, ChevronRight, Clock, Target, Sparkles, Award, TrendingDown } from 'lucide-react';
 
-interface DashboardProps {
-  userEmail: string;
-}
-
-export function Dashboard({ userEmail }: DashboardProps) {
+export function Dashboard({ userEmail }) {
   const firstName = userEmail.split('@')[0].charAt(0).toUpperCase() + userEmail.split('@')[0].slice(1);
   
   return (

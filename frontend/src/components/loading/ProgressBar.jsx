@@ -1,8 +1,4 @@
-interface ProgressBarProps {
-  progress: number;
-}
-
-export function ProgressBar({ progress }: ProgressBarProps) {
+export function ProgressBar({ progress }) {
   return (
     <div className="w-full max-w-md px-8">
       {/* Progress bar container */}

@@ -5,11 +5,7 @@ import { Spinner } from './Spinner';
 import { ProgressBar } from './ProgressBar';
 import { useDarkMode } from '../../contexts/DarkModeContext';
 
-interface LoadingScreenProps {
-  onLoadingComplete: () => void;
-}
-
-export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
+export function LoadingScreen({ onLoadingComplete }) {
   const [progress, setProgress] = useState(0);
   const { darkMode } = useDarkMode();
 
