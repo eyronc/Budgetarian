@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
 import { LoginForm } from '../components/auth/LoginForm';
 import { RegisterForm } from '../components/auth/RegisterForm';
-import { ArrowRight, DollarSign, Apple, TrendingDown } from 'lucide-react';
+import { ArrowRight, Apple, TrendingDown } from 'lucide-react';
 import { useDarkMode } from '../contexts/DarkModeContext';
 
 export function LandingPage() {
@@ -33,16 +33,38 @@ export function LandingPage() {
     }
   };
 
+  const featureCards = [
+    {
+      type: 'peso',
+      gradient: 'from-emerald-500 to-lime-600',
+      title: 'Budget-Based',
+      description: 'Set your weekly or monthly food budget. Our AI creates meal plans that never exceed your limit.',
+    },
+    {
+      type: 'icon',
+      icon: Apple,
+      gradient: 'from-amber-500 to-yellow-600',
+      title: 'Nutrition-Optimized',
+      description: 'Get balanced meals with proper protein, carbs, and nutrients - without breaking the bank.',
+    },
+    {
+      type: 'icon',
+      icon: TrendingDown,
+      gradient: 'from-sky-500 to-teal-600',
+      title: 'Smart Shopping',
+      description: 'Auto-generated grocery lists with price estimates and money-saving ingredient swaps.',
+    },
+  ];
+
   return (
     <>
       <Layout onSignIn={() => setShowLoginForm(true)} onGetStarted={() => setShowRegisterForm(true)}>
         {/* Hero Section */}
         <section className={`px-6 sm:px-8 pt-12 sm:pt-16 pb-20 sm:pb-24 relative overflow-hidden transition-colors ${
-          darkMode 
-            ? 'bg-linear-to-b from-gray-900 to-gray-800' 
+          darkMode
+            ? 'bg-linear-to-b from-gray-900 to-gray-800'
             : 'bg-linear-to-b from-white to-emerald-50'
         }`}>
-          {/* Animated background elements */}
           <div className={`absolute top-20 right-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float ${
             darkMode ? 'bg-emerald-900' : 'bg-green-100'
           }`} />
@@ -53,8 +75,8 @@ export function LandingPage() {
           <div className="max-w-6xl mx-auto relative z-10">
             <div className="text-center max-w-4xl mx-auto mb-16 sm:mb-20 animate-fade-in">
               <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 ${
-                darkMode 
-                  ? 'bg-emerald-900/30 text-emerald-400' 
+                darkMode
+                  ? 'bg-emerald-900/30 text-emerald-400'
                   : 'bg-emerald-100 text-emerald-700'
               }`}>
                 <TrendingDown className="w-4 h-4" />
@@ -89,8 +111,8 @@ export function LandingPage() {
                 <button
                   onClick={scrollToHowItWorks}
                   className={`w-full sm:w-auto px-8 py-3.5 font-semibold rounded-full border-2 hover:scale-105 transition-all cursor-pointer text-base ${
-                    darkMode 
-                      ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-emerald-500' 
+                    darkMode
+                      ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-emerald-500'
                       : 'bg-white text-gray-700 border-gray-200 hover:border-emerald-500'
                   }`}
                 >
@@ -101,55 +123,35 @@ export function LandingPage() {
 
             {/* Feature Preview Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-              {[
-                {
-                  icon: DollarSign,
-                  gradient: 'from-emerald-500 to-lime-600',
-                  title: 'Budget-Based',
-                  description: 'Set your weekly or monthly food budget. Our AI creates meal plans that never exceed your limit.',
-                },
-                {
-                  icon: Apple,
-                  gradient: 'from-amber-500 to-yellow-600',
-                  title: 'Nutrition-Optimized',
-                  description: 'Get balanced meals with proper protein, carbs, and nutrients - without breaking the bank.',
-                },
-                {
-                  icon: TrendingDown,
-                  gradient: 'from-sky-500 to-teal-600',
-                  title: 'Smart Shopping',
-                  description: 'Auto-generated grocery lists with price estimates and money-saving ingredient swaps.',
-                },
-              ].map((card, idx) => {
-                const Icon = card.icon;
-                return (
-                  <div
-                    key={idx}
-                    className={`rounded-3xl p-8 border hover:shadow-lg hover:-translate-y-2 transition-all duration-300 animate-slide-up ${
-                      darkMode 
-                        ? 'bg-gray-800/50 border-gray-700/50' 
-                        : 'bg-white shadow-sm border-gray-100'
-                    }`}
-                    style={{ animationDelay: `${idx * 100}ms` }}
-                  >
-                    <div
-                      className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 hover:rotate-12 hover:scale-110 transition-transform duration-300 bg-linear-to-br ${card.gradient}`}
-                    >
-                      <Icon className="w-7 h-7 text-white" />
-                    </div>
-                    <h3 className={`text-2xl font-bold mb-3 transition-colors ${
-                      darkMode ? 'text-gray-100' : 'text-gray-900'
-                    }`}>
-                      {card.title}
-                    </h3>
-                    <p className={`text-base transition-colors ${
-                      darkMode ? 'text-gray-400' : 'text-gray-600'
-                    }`} style={{ lineHeight: '1.6' }}>
-                      {card.description}
-                    </p>
+              {featureCards.map((card, idx) => (
+                <div
+                  key={idx}
+                  className={`rounded-3xl p-8 border hover:shadow-lg hover:-translate-y-2 transition-all duration-300 animate-slide-up ${
+                    darkMode
+                      ? 'bg-gray-800/50 border-gray-700/50'
+                      : 'bg-white shadow-sm border-gray-100'
+                  }`}
+                  style={{ animationDelay: `${idx * 100}ms` }}
+                >
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 hover:rotate-12 hover:scale-110 transition-transform duration-300 bg-linear-to-br ${card.gradient}`}>
+                    {card.type === 'peso' ? (
+                      <span className="text-2xl font-black text-white">₱</span>
+                    ) : (
+                      <card.icon className="w-7 h-7 text-white" />
+                    )}
                   </div>
-                );
-              })}
+                  <h3 className={`text-2xl font-bold mb-3 transition-colors ${
+                    darkMode ? 'text-gray-100' : 'text-gray-900'
+                  }`}>
+                    {card.title}
+                  </h3>
+                  <p className={`text-base transition-colors ${
+                    darkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`} style={{ lineHeight: '1.6' }}>
+                    {card.description}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -209,9 +211,7 @@ export function LandingPage() {
                     className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-scale-in ${step.bgColor}`}
                     style={{ animationDelay: `${idx * 150}ms` }}
                   >
-                    <span className={`text-3xl font-bold ${step.textColor}`}>
-                      {step.number}
-                    </span>
+                    <span className={`text-3xl font-bold ${step.textColor}`}>{step.number}</span>
                   </div>
                   <h3 className={`text-xl font-bold mb-3 transition-colors ${
                     darkMode ? 'text-gray-100' : 'text-gray-900'
@@ -235,7 +235,6 @@ export function LandingPage() {
             backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)',
             backgroundSize: '50px 50px',
           }} />
-
           <div className="max-w-5xl mx-auto relative z-10">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center text-white">
               {[
@@ -255,31 +254,38 @@ export function LandingPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="px-6 sm:px-8 py-20 sm:py-24 relative overflow-hidden bg-linear-to-br from-emerald-500 to-lime-600">
+        <section className={`px-6 sm:px-8 py-20 sm:py-24 relative overflow-hidden transition-colors ${
+          darkMode ? 'bg-gray-900' : 'bg-white'
+        }`}>
           <div className="max-w-4xl mx-auto text-center relative z-10 animate-fade-in">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6" style={{ lineHeight: '1.15' }}>
+            <h2 className={`text-4xl sm:text-5xl md:text-6xl font-bold mb-6 transition-colors ${
+              darkMode ? 'text-gray-100' : 'text-black'
+            }`} style={{ lineHeight: '1.15' }}>
               Ready to eat healthy
               <br />
               without overspending?
             </h2>
-            <p className="text-xl text-white/90 mb-10">
+            <p className={`text-xl mb-10 transition-colors ${
+              darkMode ? 'text-gray-300' : 'text-black'
+            }`}>
               Join thousands using Budgetarian to save money and improve their nutrition
             </p>
             <button
               onClick={() => setShowRegisterForm(true)}
-              className="px-10 py-4 bg-white text-emerald-600 font-semibold rounded-full hover:shadow-2xl hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2 text-lg"
+              className="px-10 py-4 bg-linear-to-r from-emerald-500 to-lime-600 text-white font-semibold rounded-full hover:shadow-2xl hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2 text-lg"
             >
               Start Your Free Meal Plan
               <ArrowRight className="w-5 h-5" />
             </button>
-            <p className="text-sm text-white/80 mt-6">
+            <p className={`text-sm mt-6 transition-colors ${
+              darkMode ? 'text-gray-400' : 'text-black'
+            }`}>
               No credit card required • Free forever
             </p>
           </div>
         </section>
       </Layout>
 
-      {/* Auth Modals */}
       {showLoginForm && (
         <LoginForm
           onClose={() => setShowLoginForm(false)}

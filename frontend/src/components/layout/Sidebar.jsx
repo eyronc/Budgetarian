@@ -14,7 +14,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
 
   const menuItems = [
     { id: 'dashboard', icon: Home, label: 'Dashboard', gradient: 'from-emerald-400 to-emerald-600', path: '/dashboard' },
-    { id: 'meal-plans', icon: Calendar, label: 'Meal Plans', gradient: 'from-blue-400 to-blue-600', path: '/meal-plans' },
+    { id: 'meal-plans', icon: Calendar, label: 'Meal & Workout Plans', gradient: 'from-blue-400 to-blue-600', path: '/meal-plans' },
     { id: 'grocery', icon: ShoppingCart, label: 'Grocery List', gradient: 'from-purple-400 to-purple-600', path: '/grocery' },
     { id: 'budget', icon: TrendingUp, label: 'Budget Tracker', gradient: 'from-orange-400 to-orange-600', path: '/budget' },
     { id: 'settings', icon: Settings, label: 'Settings', gradient: 'from-gray-400 to-gray-600', path: '/settings' },
@@ -144,7 +144,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
                 }`} />
               </div>
               
-              <span className={`font-semibold text-sm transition-colors duration-300 ${
+              <span className={`font-semibold text-sm whitespace-nowrap transition-colors duration-300 ${
                 isActive 
                   ? darkMode 
                     ? 'text-emerald-400' 

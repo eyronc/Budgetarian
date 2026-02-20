@@ -4,7 +4,7 @@ import { DarkModeProvider } from './contexts/DarkModeContext';
 import { LoadingScreen } from './components/loading/LoadingScreen';
 import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { MealPlansPage } from './pages/MealPlansPage';
+import { MealandWorkoutPlansPage } from './pages/MealandWorkoutPlansPage';
 import { GroceryListPage } from './pages/GroceryListPage';
 import { BudgetTrackerPage } from './pages/BudgetTrackerPage';
 import { SettingsPage } from './pages/SettingsPage';
@@ -20,7 +20,7 @@ function AppContent() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
-      <Route path="/meal-plans" element={<MealPlansPage />} />
+      <Route path="/meal-plans" element={<MealandWorkoutPlansPage />} />
       <Route path="/grocery" element={<GroceryListPage />} />
       <Route path="/budget" element={<BudgetTrackerPage />} />
       <Route path="/settings" element={<SettingsPage />} />
