@@ -8,6 +8,7 @@ import { MealandWorkoutPlansPage } from './pages/MealandWorkoutPlansPage';
 import { GroceryListPage } from './pages/GroceryListPage';
 import { BudgetTrackerPage } from './pages/BudgetTrackerPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,6 +25,7 @@ function AppContent() {
       <Route path="/grocery" element={<GroceryListPage />} />
       <Route path="/budget" element={<BudgetTrackerPage />} />
       <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 }

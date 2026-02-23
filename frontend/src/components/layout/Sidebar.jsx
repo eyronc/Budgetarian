@@ -1,4 +1,4 @@
-import { Home, Calendar, ShoppingCart, TrendingUp, Settings, LogOut, X, Menu } from 'lucide-react';
+import { Home, Calendar, ShoppingCart, TrendingUp, Settings, LogOut, X, Menu, User } from 'lucide-react';
 import { BudgetarianLogo } from '../branding/BudgetarianLogo';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +48,12 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
 
   const handleNavigate = (path) => {
     navigate(path);
+    setIsMobileOpen(false);
+  };
+
+  const handleProfileClick = () => {
+    setShowProfileMenu(false);
+    navigate('/profile');
     setIsMobileOpen(false);
   };
 
@@ -203,8 +209,24 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
                 ? 'bg-gray-800 border-gray-700/50' 
                 : 'bg-white border-emerald-100/50'
             }`}>
-              <div className={`px-5 py-4 border-b ${
+              <button
+                onClick={handleProfileClick}
+                className={`w-full flex items-center gap-3 px-5 py-3 transition-all duration-200 cursor-pointer group ${
+                  darkMode 
+                    ? 'hover:bg-linear-to-r hover:from-emerald-900/20 hover:to-transparent text-gray-300' 
+                    : 'hover:bg-linear-to-r hover:from-emerald-50 hover:to-transparent text-gray-700'
+                }`}
+              >
+                <User className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span className="font-semibold text-sm">View Profile</span>
+              </button>
+              
+              <div className={`my-2 mx-5 border-t ${
                 darkMode ? 'border-gray-700' : 'border-gray-100'
+              }`}></div>
+              
+              <div className={`px-5 py-4 ${
+                darkMode ? 'border-b border-gray-700' : 'border-b border-gray-100'
               }`}>
                 <div className={`text-xs font-semibold mb-2 uppercase tracking-wide transition-colors ${
                   darkMode ? 'text-gray-500' : 'text-gray-500'
@@ -213,7 +235,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
                   <span className="text-lg font-bold bg-linear-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">75%</span>
                   <span className={`text-xs font-medium transition-colors ${
                     darkMode ? 'text-gray-400' : 'text-gray-600'
-                  }`}>$750 / $1,000</span>
+                  }`}>₱750 / ₱1,000</span>
                 </div>
                 <div className={`w-full rounded-full h-2.5 overflow-hidden shadow-inner ${
                   darkMode 

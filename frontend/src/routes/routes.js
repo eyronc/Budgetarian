@@ -5,4 +5,5 @@ export const ROUTES = {
   GROCERY: '/grocery',
   BUDGET: '/budget',
   SETTINGS: '/settings',
+  PROFILE: '/profile'
 };
