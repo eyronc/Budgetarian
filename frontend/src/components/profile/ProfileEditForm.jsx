@@ -22,7 +22,7 @@ export function ProfileEditForm({ user, onSave, onCancel }) {
     { name: 'location', label: 'Location', icon: MapPin, type: 'text', placeholder: 'City, Country' },
   ];
 
-  const inputClass = `w-full pl-11 pr-4 py-3 rounded-xl border text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 ${
+  const inputClass = `w-full pl-11 pr-4 py-3 rounded-xl border text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 cursor-text ${
     darkMode
       ? 'bg-gray-700/60 border-gray-600 text-gray-100 placeholder-gray-500'
       : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400'
@@ -48,7 +48,7 @@ export function ProfileEditForm({ user, onSave, onCancel }) {
             </p>
           </div>
           {/* Avatar Preview */}
-          <div className="w-16 h-16 bg-linear-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
+          <div className="w-16 h-16 bg-linear-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg cursor-default">
             {formData.name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'AC'}
           </div>
         </div>
@@ -89,7 +89,7 @@ export function ProfileEditForm({ user, onSave, onCancel }) {
             onChange={handleChange}
             placeholder="Tell us a little about yourself..."
             rows={3}
-            className={`w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 resize-none ${
+            className={`w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 resize-none cursor-text ${
               darkMode
                 ? 'bg-gray-700/60 border-gray-600 text-gray-100 placeholder-gray-500'
                 : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400'

@@ -16,7 +16,7 @@ export function HealthGoalsForm({ goals, onSave }) {
     onSave(formData);
   };
 
-  const inputClass = `w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 ${
+  const inputClass = `w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 cursor-text ${
     darkMode
       ? 'bg-gray-700/60 border-gray-600 text-gray-100'
       : 'bg-gray-50 border-gray-200 text-gray-900'
@@ -64,7 +64,7 @@ export function HealthGoalsForm({ goals, onSave }) {
               <p className={`text-xs font-semibold uppercase tracking-wide mb-1 ${
                 darkMode ? 'text-gray-500' : 'text-gray-400'
               }`}>Your BMI</p>
-              <p className={`text-4xl font-bold ${bmiInfo?.color}`}>{bmi}</p>
+              <p className={`text-5xl font-bold ${bmiInfo?.color}`}>{bmi}</p>
               <p className={`text-sm font-semibold mt-1 ${bmiInfo?.color}`}>{bmiInfo?.label}</p>
             </div>
             <div className="text-right">
@@ -138,7 +138,7 @@ export function HealthGoalsForm({ goals, onSave }) {
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {macroStats.map(({ label, value, unit, icon: Icon, color, field }) => (
-            <div key={field} className={`p-4 rounded-2xl border transition-colors ${
+            <div key={field} className={`p-4 rounded-2xl border transition-colors cursor-default ${
               darkMode ? 'bg-gray-700/50 border-gray-600' : 'bg-gray-50 border-gray-100'
             }`}>
               <div className={`w-9 h-9 bg-linear-to-br ${color} rounded-xl flex items-center justify-center shadow-md mb-3`}>
@@ -151,7 +151,7 @@ export function HealthGoalsForm({ goals, onSave }) {
                   name={field}
                   value={formData[field]}
                   onChange={handleChange}
-                  className={`w-full px-2 py-1.5 rounded-lg border text-sm font-bold transition-all outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 ${
+                  className={`w-full px-2 py-1.5 rounded-lg border text-sm font-bold transition-all outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 cursor-text ${
                     darkMode
                       ? 'bg-gray-600/60 border-gray-500 text-gray-100'
                       : 'bg-white border-gray-200 text-gray-900'

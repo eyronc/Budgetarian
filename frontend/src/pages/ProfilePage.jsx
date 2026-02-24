@@ -15,7 +15,7 @@ export function ProfilePage() {
   
   const [userData, setUserData] = useState({
     name: 'Aaron Cumahig',
-    email: 'aaron@example.com',
+    email: 'eyronc@gmail.com',
     phone: '+639696969696',
     location: 'Cebu City, Philippines',
     initials: 'AC',
@@ -51,17 +51,14 @@ export function ProfilePage() {
   const handleSaveProfile = (data) => {
     setUserData({ ...userData, ...data });
     setIsEditing(false);
-    // Add success toast notification here
   };
 
   const handleSaveHealthGoals = (data) => {
     setHealthGoals(data);
-    // Add success toast notification here
   };
 
   const handleSavePreferences = (data) => {
     setPreferences(data);
-    // Add success toast notification here
   };
 
   const tabs = [
@@ -72,7 +69,7 @@ export function ProfilePage() {
 
   return (
     <div className={`min-h-screen transition-colors ${
-      darkMode ? 'bg-gray-900' : 'bg-gray-50'
+      darkMode ? 'bg-linear-to-br from-gray-900 via-slate-900 to-gray-800' : 'bg-gray-50'
     }`}>
       {/* Header */}
       <div className={`sticky top-0 z-10 backdrop-blur-md border-b transition-colors ${
@@ -84,7 +81,7 @@ export function ProfilePage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate('/dashboard')}
-              className={`p-2 rounded-xl transition-colors ${
+              className={`p-2 rounded-xl transition-colors cursor-pointer ${
                 darkMode 
                   ? 'hover:bg-gray-700' 
                   : 'hover:bg-gray-100'
@@ -121,7 +118,7 @@ export function ProfilePage() {
                   setActiveTab(tab.id);
                   setIsEditing(false);
                 }}
-                className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
+                className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all cursor-pointer ${
                   isActive
                     ? darkMode
                       ? 'bg-emerald-900/30 text-emerald-400'
