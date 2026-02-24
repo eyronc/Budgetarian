@@ -9,6 +9,7 @@ import { GroceryListPage } from './pages/GroceryListPage';
 import { BudgetTrackerPage } from './pages/BudgetTrackerPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { RecipePage } from './pages/RecipePage';
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +23,7 @@ function AppContent() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/meal-plans" element={<MealandWorkoutPlansPage />} />
+      <Route path="/recipes" element={<RecipePage />} />
       <Route path="/grocery" element={<GroceryListPage />} />
       <Route path="/budget" element={<BudgetTrackerPage />} />
       <Route path="/settings" element={<SettingsPage />} />
