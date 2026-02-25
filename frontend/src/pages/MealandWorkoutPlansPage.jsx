@@ -1,14 +1,253 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Sidebar } from '../components/layout/Sidebar';
 import { Calendar, Plus, ChevronLeft, ChevronRight, Flame, Clock, Users, Dumbbell, Zap, Timer } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDarkMode } from '../contexts/DarkModeContext';
+import { MealSlot } from '../components/meal/MealSlot';
+import { RecipeSelectionModal } from '../components/meal/RecipeSelectionModal';
+import { RecipeDetail } from '../components/recipe/RecipeDetail';
+
+const RECIPES = [
+  {
+    id: 1,
+    name: 'Garlic Butter Chicken & Rice',
+    description: 'Tender chicken thighs in a rich garlic butter sauce served over fluffy white rice.',
+    emoji: '🍗',
+    gradient: 'from-orange-400 to-amber-500',
+    category: 'Dinner',
+    time: '30 min',
+    servings: '4',
+    calories: 620,
+    costPerServing: 55,
+    liked: false,
+    ingredients: [
+      { name: 'Chicken thighs', amount: '500g', cost: 90 },
+      { name: 'White rice', amount: '2 cups', cost: 30 },
+      { name: 'Garlic', amount: '6 cloves', cost: 10 },
+      { name: 'Butter', amount: '3 tbsp', cost: 15 },
+      { name: 'Soy sauce', amount: '2 tbsp', cost: 5 },
+      { name: 'Spring onions', amount: '3 stalks', cost: 10 },
+    ],
+    steps: [
+      'Season chicken thighs with salt, pepper, and a splash of soy sauce. Let marinate for 10 minutes.',
+      'Heat a pan over medium-high heat. Sear chicken skin-side down for 6–7 minutes until golden and crispy.',
+      'Flip and cook for another 5 minutes. Remove and set aside.',
+      'In the same pan, melt butter and sauté minced garlic until fragrant, about 2 minutes.',
+      'Return chicken to the pan, spoon garlic butter over it, and cook 3 more minutes.',
+      'Serve over cooked rice and garnish with chopped spring onions.',
+    ],
+  },
+  {
+    id: 2,
+    name: 'Egg Fried Rice',
+    description: 'Classic Filipino-style fried rice loaded with eggs and vegetables.',
+    emoji: '🍳',
+    gradient: 'from-yellow-400 to-orange-400',
+    category: 'Breakfast',
+    time: '15 min',
+    servings: '2',
+    calories: 380,
+    costPerServing: 20,
+    liked: true,
+    ingredients: [
+      { name: 'Day-old rice', amount: '2 cups', cost: 15 },
+      { name: 'Eggs', amount: '3 pcs', cost: 18 },
+      { name: 'Garlic', amount: '4 cloves', cost: 5 },
+      { name: 'Soy sauce', amount: '1.5 tbsp', cost: 3 },
+      { name: 'Cooking oil', amount: '2 tbsp', cost: 4 },
+    ],
+    steps: [
+      'Break up cold day-old rice so there are no clumps.',
+      'Heat oil in a wok or large pan on high heat. Fry garlic until golden.',
+      'Push garlic to the side, crack in eggs and scramble lightly.',
+      'Add rice and toss everything together over high heat for 3–4 minutes.',
+      'Season with soy sauce and a pinch of pepper. Serve hot.',
+    ],
+  },
+  {
+    id: 3,
+    name: 'Monggo Guisado',
+    description: 'Hearty Filipino mung bean stew with pork and vegetables.',
+    emoji: '🫘',
+    gradient: 'from-green-500 to-emerald-600',
+    category: 'Dinner',
+    time: '45 min',
+    servings: '5',
+    calories: 340,
+    costPerServing: 35,
+    liked: false,
+    ingredients: [
+      { name: 'Mung beans', amount: '1 cup', cost: 30 },
+      { name: 'Pork belly', amount: '150g', cost: 50 },
+      { name: 'Spinach / malunggay', amount: '1 bunch', cost: 15 },
+      { name: 'Tomatoes', amount: '2 pcs', cost: 10 },
+      { name: 'Onion & garlic', amount: 'to taste', cost: 8 },
+      { name: 'Fish sauce', amount: '2 tbsp', cost: 5 },
+    ],
+    steps: [
+      'Rinse mung beans and boil in 4 cups water for 20 minutes until soft.',
+      'In a separate pan, sauté garlic and onion in oil. Add pork and cook until browned.',
+      'Add chopped tomatoes and fish sauce; stir for 2 minutes.',
+      'Combine pork mixture with softened mung beans and simmer 10 minutes.',
+      'Add spinach or malunggay leaves, stir, and cook 2 more minutes. Serve with rice.',
+    ],
+  },
+  {
+    id: 4,
+    name: 'Banana Oat Pancakes',
+    description: 'Two-ingredient wonder pancakes — naturally sweet and cheap.',
+    emoji: '🥞',
+    gradient: 'from-yellow-300 to-yellow-500',
+    category: 'Breakfast',
+    time: '12 min',
+    servings: '2',
+    calories: 260,
+    costPerServing: 18,
+    liked: false,
+    ingredients: [
+      { name: 'Ripe bananas', amount: '2 large', cost: 10 },
+      { name: 'Rolled oats', amount: '1 cup', cost: 15 },
+      { name: 'Eggs', amount: '2 pcs', cost: 12 },
+      { name: 'Pinch of salt', amount: 'to taste', cost: 1 },
+    ],
+    steps: [
+      'Mash bananas in a bowl until completely smooth.',
+      'Mix in oats, eggs, and a pinch of salt. Let batter rest 2 minutes.',
+      'Heat a non-stick pan on medium-low and grease lightly.',
+      'Pour small rounds of batter and cook 2–3 minutes per side until golden.',
+      'Serve with honey, sliced banana, or fresh fruit.',
+    ],
+  },
+  {
+    id: 5,
+    name: 'Tuna Pasta Arrabbiata',
+    description: 'Canned tuna meets spicy tomato sauce for a quick, filling pasta.',
+    emoji: '🍝',
+    gradient: 'from-red-400 to-rose-500',
+    category: 'Lunch',
+    time: '20 min',
+    servings: '3',
+    calories: 490,
+    costPerServing: 42,
+    liked: false,
+    ingredients: [
+      { name: 'Pasta (spaghetti)', amount: '250g', cost: 35 },
+      { name: 'Canned tuna', amount: '1 can (180g)', cost: 40 },
+      { name: 'Canned tomatoes', amount: '1 can', cost: 30 },
+      { name: 'Chili flakes', amount: '1 tsp', cost: 3 },
+      { name: 'Garlic', amount: '4 cloves', cost: 5 },
+      { name: 'Olive / cooking oil', amount: '2 tbsp', cost: 10 },
+    ],
+    steps: [
+      'Cook pasta in salted boiling water until al dente. Reserve ½ cup pasta water.',
+      'Sauté garlic and chili flakes in oil over medium heat for 1 minute.',
+      'Add canned tomatoes, crush gently, and simmer 8 minutes.',
+      'Drain tuna and fold into the sauce. Cook 2 minutes.',
+      'Toss in drained pasta with a splash of reserved pasta water. Serve immediately.',
+    ],
+  },
+  {
+    id: 6,
+    name: 'Cucumber & Tomato Salad',
+    description: 'Crisp, refreshing, and zero-cook. A vibrant side or light lunch.',
+    emoji: '🥗',
+    gradient: 'from-teal-400 to-emerald-500',
+    category: 'Snacks',
+    time: '5 min',
+    servings: '2',
+    calories: 95,
+    costPerServing: 15,
+    liked: false,
+    ingredients: [
+      { name: 'Cucumber', amount: '1 large', cost: 15 },
+      { name: 'Tomatoes', amount: '2 pcs', cost: 12 },
+      { name: 'Red onion', amount: '½ small', cost: 5 },
+      { name: 'Vinegar / calamansi', amount: '2 tbsp', cost: 3 },
+      { name: 'Salt & pepper', amount: 'to taste', cost: 1 },
+    ],
+    steps: [
+      'Slice cucumber and tomatoes into bite-sized pieces.',
+      'Thinly slice red onion and rinse under cold water to reduce sharpness.',
+      'Combine all vegetables in a bowl.',
+      'Drizzle with vinegar or calamansi juice; season with salt and pepper. Toss and serve.',
+    ],
+  },
+];
+
+const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner'];
+
+function buildEmptyPlan() {
+  const plan = {};
+  DAYS_OF_WEEK.forEach((day) => {
+    plan[day] = { Breakfast: null, Lunch: null, Dinner: null };
+  });
+  return plan;
+}
+
+function loadPlan() {
+  try {
+    const saved = localStorage.getItem('mealPlan');
+    if (!saved) return buildEmptyPlan();
+    const parsed = JSON.parse(saved);
+    const hydrated = buildEmptyPlan();
+    DAYS_OF_WEEK.forEach((day) => {
+      MEAL_TYPES.forEach((meal) => {
+        const id = parsed?.[day]?.[meal];
+        if (id) {
+          const recipe = RECIPES.find((r) => r.id === id);
+          if (recipe) hydrated[day][meal] = recipe;
+        }
+      });
+    });
+    return hydrated;
+  } catch {
+    return buildEmptyPlan();
+  }
+}
+
+function savePlan(plan) {
+  const slim = {};
+  DAYS_OF_WEEK.forEach((day) => {
+    slim[day] = {};
+    MEAL_TYPES.forEach((meal) => {
+      slim[day][meal] = plan[day][meal]?.id || null;
+    });
+  });
+  localStorage.setItem('mealPlan', JSON.stringify(slim));
+}
 
 export function MealandWorkoutPlansPage() {
   const navigate = useNavigate();
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
   const [selectedDay, setSelectedDay] = useState(0);
   const { darkMode } = useDarkMode();
+
+  // ── Recipe state ──────────────────────────────────────────────────────────
+  const [mealPlan, setMealPlan] = useState(() => loadPlan());
+  const [modal, setModal] = useState(null); // { mealType, day }
+  const [detailRecipe, setDetailRecipe] = useState(null);
+
+  useEffect(() => { savePlan(mealPlan); }, [mealPlan]);
+
+  const handleAddRecipe = (mealType, dayKey) => setModal({ mealType, day: dayKey });
+
+  const handleSelectRecipe = (recipe) => {
+    if (!modal) return;
+    setMealPlan((prev) => ({
+      ...prev,
+      [modal.day]: { ...prev[modal.day], [modal.mealType]: recipe },
+    }));
+    setModal(null);
+  };
+
+  const handleRemoveRecipe = (mealType, dayKey) => {
+    setMealPlan((prev) => ({
+      ...prev,
+      [dayKey]: { ...prev[dayKey], [mealType]: null },
+    }));
+  };
+  // ─────────────────────────────────────────────────────────────────────────
 
   const handleLogout = () => {
     localStorage.removeItem('userEmail');
@@ -29,6 +268,8 @@ export function MealandWorkoutPlansPage() {
     { short: 'Sat', full: 'Saturday', date: 20 },
     { short: 'Sun', full: 'Sunday', date: 21 },
   ];
+
+  const currentDayKey = daysOfWeek[selectedDay].short;
 
   const meals = [
     {
@@ -212,7 +453,7 @@ export function MealandWorkoutPlansPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-          {/* Left: Meals + Workouts */}
+          {/* Left: Meals + Recipe Slots + Workouts */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-5">
 
             {/* Meals Section */}
@@ -278,6 +519,33 @@ export function MealandWorkoutPlansPage() {
                       </div>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── My Recipes Section (NEW) ── */}
+            <div className={`backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border shadow-xl transition-colors ${
+              darkMode
+                ? 'bg-gray-800/90 border-gray-700/50'
+                : 'bg-white/90 border-gray-200/50'
+            }`}>
+              <div className="flex items-center gap-3 mb-5 sm:mb-6">
+                <div className="w-1.5 h-8 bg-linear-to-b from-blue-500 to-indigo-500 rounded-full" />
+                <h2 className={`text-xl sm:text-2xl font-black transition-colors ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+                  My Recipes for {daysOfWeek[selectedDay].short}
+                </h2>
+              </div>
+              <div className="space-y-3">
+                {MEAL_TYPES.map((mealType) => (
+                  <MealSlot
+                    key={mealType}
+                    mealType={mealType}
+                    day={currentDayKey}
+                    recipe={mealPlan[currentDayKey][mealType]}
+                    onAdd={handleAddRecipe}
+                    onRemove={handleRemoveRecipe}
+                    onViewDetail={setDetailRecipe}
+                  />
                 ))}
               </div>
             </div>
@@ -502,6 +770,26 @@ export function MealandWorkoutPlansPage() {
           </div>
         </div>
       </div>
+
+      {/* Recipe Selection Modal */}
+      {modal && (
+        <RecipeSelectionModal
+          recipes={RECIPES}
+          onSelect={handleSelectRecipe}
+          onClose={() => setModal(null)}
+          mealType={modal.mealType}
+          day={modal.day}
+        />
+      )}
+
+      {/* Recipe Detail Modal */}
+      {detailRecipe && (
+        <RecipeDetail
+          recipe={detailRecipe}
+          onClose={() => setDetailRecipe(null)}
+          onAddToGrocery={() => {}}
+        />
+      )}
 
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
