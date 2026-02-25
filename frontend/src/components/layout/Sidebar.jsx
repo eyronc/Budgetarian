@@ -12,6 +12,15 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const profileMenuRef = useRef(null);
 
+  // Read name dynamically from localStorage
+  const userName = localStorage.getItem('userName') || 'User';
+  const userInitials = userName
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
   const menuItems = [
     { id: 'dashboard',  icon: Home,            label: 'Dashboard',            gradient: 'from-emerald-400 to-emerald-600', activeBar: 'from-emerald-400 to-emerald-600', path: '/dashboard' },
     { id: 'meal-plans', icon: Calendar,         label: 'Meal & Workout Plans', gradient: 'from-blue-400 to-blue-600',      activeBar: 'from-blue-400 to-blue-600',      path: '/meal-plans' },
@@ -102,12 +111,10 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
               }`}
               title={item.label}
             >
-              {/* Colored active indicator bar */}
               {isActive && (
                 <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-linear-to-b ${item.activeBar} rounded-r-full`} />
               )}
 
-              {/* Icon box */}
               <div className={`relative shrink-0 p-2 rounded-xl transition-all duration-200 ${
                 isActive
                   ? `bg-linear-to-br ${item.gradient} shadow-lg`
@@ -120,7 +127,6 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
                 }`} />
               </div>
 
-              {/* Label — wraps naturally, no truncation */}
               <span className={`font-semibold text-sm leading-tight text-left transition-colors duration-200 ${
                 isActive
                   ? darkMode ? 'text-gray-100' : 'text-gray-900'
@@ -146,13 +152,13 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
           >
             <div className="relative shrink-0">
               <div className="w-10 h-10 bg-linear-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-lg">
-                AC
+                {userInitials}
               </div>
               <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-900" />
             </div>
             <div className="flex-1 text-left min-w-0">
               <div className={`font-bold text-sm truncate ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>
-                Aaron Cumahig
+                {userName}
               </div>
               <div className="text-xs font-semibold bg-linear-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent truncate">
                 Premium Plan ✨

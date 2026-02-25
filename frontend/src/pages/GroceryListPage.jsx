@@ -1,14 +1,32 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Sidebar } from '../components/layout/Sidebar';
 import { ShoppingCart, Check, Plus, Trash2, Edit3 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDarkMode } from '../contexts/DarkModeContext';
+
+// ── Persist checked items so Dashboard can read real counts ──────────────────
+const GROCERY_CHECKED_KEY = 'groceryCheckedItems';
+
+function loadChecked() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(GROCERY_CHECKED_KEY) || '[]'));
+  } catch { return new Set(); }
+}
+
+function saveChecked(set) {
+  localStorage.setItem(GROCERY_CHECKED_KEY, JSON.stringify([...set]));
+}
 
 export function GroceryListPage() {
   const navigate = useNavigate();
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-  const [checkedItems, setCheckedItems] = useState(new Set());
+  const [checkedItems, setCheckedItems] = useState(() => loadChecked());
   const { darkMode } = useDarkMode();
+
+  // Sync to localStorage whenever checked items change
+  useEffect(() => {
+    saveChecked(checkedItems);
+  }, [checkedItems]);
 
   const handleLogout = () => {
     localStorage.removeItem('userEmail');
@@ -240,7 +258,7 @@ export function GroceryListPage() {
             ))}
           </div>
 
-          {/* Summary Card - Sticky on desktop */}
+          {/* Summary Card */}
           <div className="xl:col-span-1">
             <div className={`backdrop-blur-md rounded-2xl sm:rounded-3xl p-5 sm:p-7 border shadow-xl xl:sticky xl:top-8 transition-colors ${
               darkMode
@@ -324,7 +342,6 @@ export function GroceryListPage() {
                   Start Shopping
                 </button>
 
-                {/* Quick Stats */}
                 <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-3 sm:gap-4">
                   <div className={`text-center p-3 sm:p-4 rounded-xl sm:rounded-2xl border ${
                     darkMode

@@ -18,7 +18,29 @@ export function LoginForm({ onClose, onLogin, onSwitchToRegister }) {
       return;
     }
 
-    onLogin(email, password);
+    // Check hardcoded account
+    if (email === 'eyronc@gmail.com' && password === 'noobmaster69') {
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userName', 'Aaron Cumahig');
+      onLogin(email, password);
+      return;
+    }
+
+    // Check registered accounts
+    try {
+      const accounts = JSON.parse(localStorage.getItem('budgetarian_accounts') || '[]');
+      const found = accounts.find(a => a.email === email && a.password === password);
+      if (found) {
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('userName', found.name);
+        onLogin(email, password);
+        return;
+      }
+    } catch {}
+
+    setError('Invalid email or password. Please try again or create an account.');
   };
 
   return (

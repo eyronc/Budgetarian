@@ -33,6 +33,31 @@ export function RegisterForm({ onClose, onRegister, onSwitchToLogin }) {
       return;
     }
 
+    // Prevent duplicate accounts
+    if (email === 'eyronc@gmail.com') {
+      setError('An account with this email already exists.');
+      return;
+    }
+
+    try {
+      const accounts = JSON.parse(localStorage.getItem('budgetarian_accounts') || '[]');
+      if (accounts.find(a => a.email === email)) {
+        setError('An account with this email already exists.');
+        return;
+      }
+      // Save the new account
+      accounts.push({ email, password, name, phone: contactNumber });
+      localStorage.setItem('budgetarian_accounts', JSON.stringify(accounts));
+
+      // Set session
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userName', name);
+    } catch {
+      setError('Registration failed. Please try again.');
+      return;
+    }
+
     onRegister(email, password, name);
   };
 
@@ -261,7 +286,6 @@ export function RegisterForm({ onClose, onRegister, onSwitchToLogin }) {
             }`}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
             <div className={`px-6 py-5 border-b flex items-center justify-between transition-colors ${
               darkMode ? 'border-gray-700' : 'border-gray-200'
             }`}>
@@ -280,16 +304,11 @@ export function RegisterForm({ onClose, onRegister, onSwitchToLogin }) {
               </button>
             </div>
 
-            {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6 text-sm leading-relaxed">
-
-              {/* Terms of Service */}
               <div>
                 <h4 className={`font-bold text-base mb-3 transition-colors ${
                   darkMode ? 'text-gray-100' : 'text-gray-900'
-                }`}>
-                  Terms of Service
-                </h4>
+                }`}>Terms of Service</h4>
                 <p className={`mb-3 transition-colors ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                   By using Budgetarian, you agree to the following:
                 </p>
@@ -311,16 +330,12 @@ export function RegisterForm({ onClose, onRegister, onSwitchToLogin }) {
                 </ul>
               </div>
 
-              {/* Divider */}
               <div className={`border-t transition-colors ${darkMode ? 'border-gray-700' : 'border-gray-100'}`} />
 
-              {/* Privacy Policy */}
               <div>
                 <h4 className={`font-bold text-base mb-3 transition-colors ${
                   darkMode ? 'text-gray-100' : 'text-gray-900'
-                }`}>
-                  Privacy Policy
-                </h4>
+                }`}>Privacy Policy</h4>
                 <p className={`mb-3 transition-colors ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                   We are committed to protecting your personal data:
                 </p>
@@ -343,7 +358,6 @@ export function RegisterForm({ onClose, onRegister, onSwitchToLogin }) {
                 </ul>
               </div>
 
-              {/* Footer note */}
               <div className={`text-xs transition-colors ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                 Last updated: February 15, 2026 &mdash; Questions? Contact us at{' '}
                 <span className={`font-semibold ${darkMode ? 'text-emerald-400' : 'text-emerald-600'}`}>
@@ -352,7 +366,6 @@ export function RegisterForm({ onClose, onRegister, onSwitchToLogin }) {
               </div>
             </div>
 
-            {/* Footer Button */}
             <div className={`px-6 py-4 border-t transition-colors ${
               darkMode ? 'border-gray-700' : 'border-gray-200'
             }`}>
