@@ -4,6 +4,7 @@ export const ROUTES = {
   MEAL_PLANS: '/meal-plans',
   GROCERY: '/grocery',
   BUDGET: '/budget',
+  ANALYTICS: '/analytics',
   SETTINGS: '/settings',
   PROFILE: '/profile'
 };
