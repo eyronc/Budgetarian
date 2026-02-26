@@ -3,6 +3,7 @@ import { BudgetarianLogo } from '../branding/BudgetarianLogo';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDarkMode } from '../../contexts/DarkModeContext';
+import { BarChart2 } from 'lucide-react';
 
 export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
   const navigate = useNavigate();
@@ -12,7 +13,6 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const profileMenuRef = useRef(null);
 
-  // Read name dynamically from localStorage
   const userName = localStorage.getItem('userName') || 'User';
   const userInitials = userName
     .split(' ')
@@ -27,6 +27,7 @@ export function Sidebar({ onLogout, activeSection = 'dashboard' }) {
     { id: 'recipes',    icon: UtensilsCrossed,  label: 'Recipes',              gradient: 'from-rose-400 to-pink-600',      activeBar: 'from-rose-400 to-pink-500',      path: '/recipes' },
     { id: 'grocery',    icon: ShoppingCart,     label: 'Grocery List',         gradient: 'from-purple-400 to-purple-600',  activeBar: 'from-purple-400 to-purple-600',  path: '/grocery' },
     { id: 'budget',     icon: TrendingUp,       label: 'Budget Tracker',       gradient: 'from-orange-400 to-orange-600',  activeBar: 'from-orange-400 to-orange-600',  path: '/budget' },
+    { id: 'analytics',  icon: BarChart2,        label: 'Analytics',            gradient: 'from-violet-400 to-indigo-600',  activeBar: 'from-violet-400 to-indigo-600',  path: '/analytics'},
     { id: 'settings',   icon: Settings,         label: 'Settings',             gradient: 'from-gray-400 to-gray-600',      activeBar: 'from-gray-400 to-gray-500',      path: '/settings' },
   ];
 

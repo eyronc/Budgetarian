@@ -10,6 +10,7 @@ import { BudgetTrackerPage } from './pages/BudgetTrackerPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { RecipePage } from './pages/RecipePage';
+import { AnalyticsPage } from './pages/AnalyticsPage';
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,6 +27,7 @@ function AppContent() {
       <Route path="/recipes" element={<RecipePage />} />
       <Route path="/grocery" element={<GroceryListPage />} />
       <Route path="/budget" element={<BudgetTrackerPage />} />
+      <Route path="/analytics" element={<AnalyticsPage />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="/profile" element={<ProfilePage />} />
     </Routes>
