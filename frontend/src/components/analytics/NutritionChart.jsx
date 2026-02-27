@@ -1,5 +1,5 @@
 import { useDarkMode } from '../../contexts/DarkModeContext';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 const macroData = [
   { name: 'Protein', value: 115, color: '#3b82f6', unit: 'g' },
@@ -17,6 +17,8 @@ const weeklyCalories = [
   { day: 'Sun', calories: 1450 },
 ];
 
+const total = macroData.reduce((s, m) => s + m.value, 0);
+
 const CustomTooltip = ({ active, payload, darkMode }) => {
   if (active && payload && payload.length) {
     const d = payload[0];
@@ -27,7 +29,7 @@ const CustomTooltip = ({ active, payload, darkMode }) => {
         <p className="font-bold" style={{ color: d.payload.color }}>{d.name}</p>
         <p className="font-semibold">{d.value}{d.payload.unit}</p>
         <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-          {Math.round((d.value / macroData.reduce((s, m) => s + m.value, 0)) * 100)}% of total
+          {Math.round((d.value / total) * 100)}% of total
         </p>
       </div>
     );
@@ -49,17 +51,18 @@ const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent
 
 export function NutritionChart() {
   const { darkMode } = useDarkMode();
-  const total = macroData.reduce((s, m) => s + m.value, 0);
+  const maxCal = Math.max(...weeklyCalories.map(x => x.calories));
 
   return (
     <div className="space-y-6">
-      {/* Donut */}
-      <ResponsiveContainer width="100%" height={200}>
-        <PieChart>
+
+      {/* Donut — fixed size, NO ResponsiveContainer */}
+      <div className="flex justify-center">
+        <PieChart width={200} height={200}>
           <Pie
             data={macroData}
-            cx="50%"
-            cy="50%"
+            cx={100}
+            cy={100}
             innerRadius={55}
             outerRadius={85}
             paddingAngle={3}
@@ -73,7 +76,7 @@ export function NutritionChart() {
           </Pie>
           <Tooltip content={<CustomTooltip darkMode={darkMode} />} />
         </PieChart>
-      </ResponsiveContainer>
+      </div>
 
       {/* Legend */}
       <div className="grid grid-cols-3 gap-2">
@@ -90,26 +93,31 @@ export function NutritionChart() {
         ))}
       </div>
 
-      {/* Weekly calorie bars */}
+      {/* Weekly calorie bars — pure CSS, zero recharts */}
       <div>
         <p className={`text-xs font-bold uppercase tracking-wide mb-3 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
           Calories this week
         </p>
         <div className="flex items-end gap-1.5 h-16">
           {weeklyCalories.map((d) => {
-            const max = Math.max(...weeklyCalories.map(x => x.calories));
-            const h = (d.calories / max) * 100;
+            const h = Math.round((d.calories / maxCal) * 100);
             return (
               <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
-                <div className="w-full rounded-t-lg relative overflow-hidden" style={{ height: `${h}%` }}>
+                <div
+                  className="w-full rounded-t-lg relative overflow-hidden"
+                  style={{ height: `${h}%` }}
+                >
                   <div className="absolute inset-0 bg-linear-to-b from-blue-400 to-blue-600 rounded-t-lg" />
                 </div>
-                <span className={`text-[9px] font-bold ${darkMode ? 'text-gray-600' : 'text-gray-400'}`}>{d.day}</span>
+                <span className={`text-[9px] font-bold ${darkMode ? 'text-gray-600' : 'text-gray-400'}`}>
+                  {d.day}
+                </span>
               </div>
             );
           })}
         </div>
       </div>
+
     </div>
   );
 }

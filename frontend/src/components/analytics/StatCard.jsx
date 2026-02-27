@@ -23,7 +23,7 @@ export function StatCard({ icon: Icon, label, value, sub, gradient, change, chan
         <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-black ${
           positive
             ? darkMode ? 'bg-emerald-900/40 text-emerald-400' : 'bg-emerald-50 text-emerald-700'
-            : darkMode ? 'bg-rose-900/40 text-rose-400' : 'bg-rose-50 text-rose-700'
+            : darkMode ? 'bg-rose-900/40 text-rose-400'       : 'bg-rose-50 text-rose-700'
         }`}>
           {positive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
           {Math.abs(change)}% {changeLabel}

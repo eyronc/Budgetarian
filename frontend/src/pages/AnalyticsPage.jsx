@@ -1,5 +1,5 @@
 import { Navigate, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from '../components/layout/Sidebar';
 import { StatCard } from '../components/analytics/StatCard';
 import { SpendingChart } from '../components/analytics/SpendingChart';
@@ -10,18 +10,148 @@ import { TopRecipes } from '../components/analytics/TopRecipes';
 import { useDarkMode } from '../contexts/DarkModeContext';
 import { Wallet, Flame, ShoppingBag, Leaf, Star } from 'lucide-react';
 
-const STAT_CARDS = [
-  { icon: Wallet,      label: 'Monthly Spend',      value: '₱475',  sub: 'of ₱1,000 budget',      gradient: 'from-emerald-400 to-emerald-600', change: -8,  changeLabel: 'vs last month' },
-  { icon: Flame,       label: 'Avg Daily Calories',  value: '1,740', sub: 'kcal per day',           gradient: 'from-orange-400 to-rose-500',     change: 3,   changeLabel: 'vs last week'  },
-  { icon: ShoppingBag, label: 'Grocery Trips',       value: '8',     sub: 'this month',             gradient: 'from-purple-400 to-purple-600',   change: -2,  changeLabel: 'vs last month' },
-  { icon: Leaf,        label: 'Budget Saved',        value: '₱525',  sub: 'from budget this month', gradient: 'from-teal-400 to-cyan-500',       change: 25,  changeLabel: 'vs last month' },
-];
+// ── Storage keys — must match other pages exactly ──────────────────────────
+const BUDGET_TXS_KEY   = 'budgetTransactions';
+const BUDGET_LIMIT_KEY = 'budgetMonthlyLimit';
+const MEAL_PLAN_KEY    = 'mealPlan';
 
+// ── Helpers ────────────────────────────────────────────────────────────────
+function getMonthISO(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function loadAnalyticsData() {
+  try {
+    const txs           = JSON.parse(localStorage.getItem(BUDGET_TXS_KEY)  || '[]');
+    const limit         = localStorage.getItem(BUDGET_LIMIT_KEY);
+    const monthlyBudget = limit ? parseFloat(limit) : 1000;
+    const now           = new Date();
+
+    // ── Current month ──────────────────────────────────────────────────────
+    const currentMonthISO = getMonthISO(now);
+    const monthTxs        = txs.filter(t => t.date && t.date.startsWith(currentMonthISO));
+    const totalSpent      = monthTxs.reduce((s, t) => s + t.amount, 0);
+    const remaining       = monthlyBudget - totalSpent;
+
+    // ── Previous month spend (for % change) ───────────────────────────────
+    const prevDate      = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const prevMonthISO  = getMonthISO(prevDate);
+    const prevMonthTxs  = txs.filter(t => t.date && t.date.startsWith(prevMonthISO));
+    const prevSpent     = prevMonthTxs.reduce((s, t) => s + t.amount, 0);
+    const spendChange   = prevSpent > 0
+      ? Math.round(((totalSpent - prevSpent) / prevSpent) * 100)
+      : 0;
+
+    // ── Grocery "trips" = unique dates with transactions this month ────────
+    const uniqueDates  = [...new Set(monthTxs.map(t => t.date))];
+    const groceryTrips = uniqueDates.length;
+
+    // ── Avg daily calories from meal plan ─────────────────────────────────
+    const mealPlan   = JSON.parse(localStorage.getItem(MEAL_PLAN_KEY) || '{}');
+    const DAYS       = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner'];
+    let totalCals = 0, mealCount = 0;
+    DAYS.forEach(day => {
+      MEAL_TYPES.forEach(meal => {
+        const entry = mealPlan?.[day]?.[meal];
+        if (entry?.calories) { totalCals += parseInt(entry.calories) || 0; mealCount++; }
+      });
+    });
+    // Average per meal-slot, times 3 slots = average full day
+    const avgDailyCalories = mealCount > 0 ? Math.round((totalCals / mealCount) * 3) : 0;
+
+    // ── Category breakdown from current-month transactions ────────────────
+    const categoryMap = {};
+    monthTxs.forEach(t => {
+      const cat = t.category || 'Other';
+      categoryMap[cat] = (categoryMap[cat] || 0) + t.amount;
+    });
+
+    // ── Savings history (last 6 months) ───────────────────────────────────
+    const savingsHistory = [];
+    for (let i = 5; i >= 0; i--) {
+      const d      = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const iso    = getMonthISO(d);
+      const mTxs   = txs.filter(t => t.date && t.date.startsWith(iso));
+      const mSpent = mTxs.reduce((s, t) => s + t.amount, 0);
+      savingsHistory.push({
+        month:   d.toLocaleString('default', { month: 'short' }),
+        savings: Math.round(Math.max(0, monthlyBudget - mSpent)),
+        target:  200,
+      });
+    }
+
+    // ── Weekly spending data ───────────────────────────────────────────────
+    const weeklyBudget = monthlyBudget / 4;
+    const weeklyData = [0, 1, 2, 3].map(w => {
+      const weekTxs = monthTxs.filter(t => {
+        const day = parseInt(t.date?.split('-')[2] || '0');
+        return day >= w * 7 + 1 && day <= (w + 1) * 7;
+      });
+      return {
+        week:   `Week ${w + 1}`,
+        spent:  Math.round(weekTxs.reduce((s, t) => s + t.amount, 0)),
+        budget: Math.round(weeklyBudget),
+      };
+    });
+
+    // ── Monthly spending data (last 6 months) ─────────────────────────────
+    const monthlyData = [];
+    for (let i = 5; i >= 0; i--) {
+      const d    = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const iso  = getMonthISO(d);
+      const mTxs = txs.filter(t => t.date && t.date.startsWith(iso));
+      monthlyData.push({
+        month: d.toLocaleString('default', { month: 'short' }),
+        spent: Math.round(mTxs.reduce((s, t) => s + t.amount, 0)),
+      });
+    }
+
+    // ── Top recipes from meal plan ─────────────────────────────────────────
+    const recipeMap = {};
+    DAYS.forEach(day => {
+      MEAL_TYPES.forEach(meal => {
+        const entry = mealPlan?.[day]?.[meal];
+        if (entry?.name) {
+          if (!recipeMap[entry.name]) recipeMap[entry.name] = { ...entry, cooked: 0 };
+          recipeMap[entry.name].cooked++;
+        }
+      });
+    });
+    const topRecipes = Object.values(recipeMap).sort((a, b) => b.cooked - a.cooked).slice(0, 5);
+
+    return {
+      monthlyBudget, totalSpent, remaining, spendChange,
+      groceryTrips, avgDailyCalories, categoryMap,
+      savingsHistory, weeklyData, monthlyData, topRecipes,
+    };
+  } catch {
+    return {
+      monthlyBudget: 1000, totalSpent: 0, remaining: 1000, spendChange: 0,
+      groceryTrips: 0, avgDailyCalories: 0, categoryMap: {},
+      savingsHistory: [], weeklyData: [], monthlyData: [], topRecipes: [],
+    };
+  }
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────
 export function AnalyticsPage() {
-  const navigate = useNavigate();
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-  const { darkMode } = useDarkMode();
+  const navigate         = useNavigate();
+  const isAuthenticated  = localStorage.getItem('isAuthenticated') === 'true';
+  const { darkMode }     = useDarkMode();
   const [spendView, setSpendView] = useState('weekly');
+  const [data, setData]  = useState(loadAnalyticsData);
+
+  const refresh = () => setData(loadAnalyticsData());
+
+  useEffect(() => {
+    window.addEventListener('focus',   refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      window.removeEventListener('focus',   refresh);
+      window.removeEventListener('storage', refresh);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('userEmail');
@@ -30,6 +160,51 @@ export function AnalyticsPage() {
   };
 
   if (!isAuthenticated) return <Navigate to="/" replace />;
+
+  const {
+    monthlyBudget, totalSpent, remaining, spendChange,
+    groceryTrips, avgDailyCalories, categoryMap,
+    savingsHistory, weeklyData, monthlyData, topRecipes,
+  } = data;
+
+  const STAT_CARDS = [
+    {
+      icon: Wallet,
+      label: 'Monthly Spend',
+      value: `₱${totalSpent.toFixed(0)}`,
+      sub: `of ₱${monthlyBudget.toFixed(0)} budget`,
+      gradient: 'from-emerald-400 to-emerald-600',
+      change: spendChange !== 0 ? -spendChange : 0,
+      changeLabel: 'vs last month',
+    },
+    {
+      icon: Flame,
+      label: 'Avg Daily Calories',
+      value: avgDailyCalories > 0 ? avgDailyCalories.toLocaleString() : '—',
+      sub: avgDailyCalories > 0 ? 'kcal per day' : 'Plan meals to track',
+      gradient: 'from-orange-400 to-rose-500',
+      change: undefined,
+      changeLabel: '',
+    },
+    {
+      icon: ShoppingBag,
+      label: 'Grocery Trips',
+      value: String(groceryTrips),
+      sub: 'this month',
+      gradient: 'from-purple-400 to-purple-600',
+      change: undefined,
+      changeLabel: '',
+    },
+    {
+      icon: Leaf,
+      label: 'Budget Saved',
+      value: `₱${Math.max(0, remaining).toFixed(0)}`,
+      sub: 'from budget this month',
+      gradient: 'from-teal-400 to-cyan-500',
+      change: remaining > 0 ? Math.round((remaining / monthlyBudget) * 100) : 0,
+      changeLabel: 'of budget',
+    },
+  ];
 
   return (
     <div className={`flex min-h-screen transition-colors duration-300 ${
@@ -42,8 +217,8 @@ export function AnalyticsPage() {
       <div className="flex-1 pt-16 lg:pt-0 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
 
         {/* Header */}
-        <div className="mb-5 sm:mb-8">
-          <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-black mb-2 tracking-tight pb-3 bg-linear-to-r bg-clip-text text-transparent ${
+        <div className="mb-5 mt-5 sm:mb-8">
+          <h1 className={`text-3xl sm:text-4xl lg:text-5xl font-black mb-2 tracking-tight pb-3 bg-linear-to-r bg-clip-text text-transparent ${
             darkMode ? 'from-violet-400 via-indigo-400 to-cyan-400' : 'from-violet-600 via-indigo-600 to-cyan-600'
           }`}>
             Analytics
@@ -83,7 +258,7 @@ export function AnalyticsPage() {
                 ))}
               </div>
             </div>
-            <SpendingChart view={spendView} />
+            <SpendingChart view={spendView} weeklyData={weeklyData} monthlyData={monthlyData} />
           </div>
 
           <div className={`rounded-2xl sm:rounded-3xl p-5 sm:p-6 border shadow-lg ${
@@ -93,7 +268,7 @@ export function AnalyticsPage() {
               <h2 className={`text-lg sm:text-xl font-black ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>By Category</h2>
               <p className={`text-xs sm:text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Where your grocery money goes</p>
             </div>
-            <CategoryBreakdown />
+            <CategoryBreakdown categoryMap={categoryMap} totalSpent={totalSpent} />
           </div>
         </div>
 
@@ -106,7 +281,7 @@ export function AnalyticsPage() {
               <h2 className={`text-lg sm:text-xl font-black ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>Savings Tracker</h2>
               <p className={`text-xs sm:text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Monthly savings vs ₱200 target</p>
             </div>
-            <SavingsTracker />
+            <SavingsTracker savingsHistory={savingsHistory} />
           </div>
 
           <div className={`rounded-2xl sm:rounded-3xl p-5 sm:p-6 border shadow-lg ${
@@ -114,7 +289,7 @@ export function AnalyticsPage() {
           }`}>
             <div className="mb-5">
               <h2 className={`text-lg sm:text-xl font-black ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>Nutrition</h2>
-              <p className={`text-xs sm:text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Today's macro breakdown</p>
+              <p className={`text-xs sm:text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Weekly macro breakdown</p>
             </div>
             <NutritionChart />
           </div>
@@ -130,11 +305,11 @@ export function AnalyticsPage() {
             </div>
             <div>
               <h2 className={`text-lg sm:text-xl font-black ${darkMode ? 'text-gray-100' : 'text-gray-900'}`}>Top Recipes</h2>
-              <p className={`text-xs sm:text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Most cooked this month + money saved</p>
+              <p className={`text-xs sm:text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Most planned this week + meal variety</p>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            <TopRecipes />
+            <TopRecipes topRecipes={topRecipes} />
           </div>
         </div>
 
